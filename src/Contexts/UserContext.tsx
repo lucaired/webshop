@@ -1,18 +1,24 @@
 import { createContext, useState } from 'react';
 
-interface User {
+export class User {
     name: string;
     email: string;
     isLoggedIn: boolean;
+
+    constructor(name: string, email: string, isLoggedIn: boolean) {
+        this.name = name;
+        this.email = email;
+        this.isLoggedIn = isLoggedIn;
+    }
 }
 
 export const UserContext = createContext<{
     user: User | null,
-    setUser: (user: User) => void
+    setUser: (user: User | null) => void
 }
 >({
     user: null,
-    setUser: (user: User) => {}
+    setUser: (user: User | null) => {}
 });
 
 interface UserContextProviderProps {

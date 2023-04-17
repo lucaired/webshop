@@ -8,8 +8,6 @@ import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 // How to add react environment variables to vs code ?
 // https://stackoverflow.com/questions/56238356/using-environment-variables-in-react
 
-console.log(process.env.REACT_APP_FIREBASE_API_KEY)
-
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -29,12 +27,11 @@ provider.setCustomParameters({ prompt: 'select_account' });
 export const auth = getAuth(firebase);
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
-interface UserAuth {
+interface FirebaseUserAuth {
     uid?: any;
     displayName?: any;
     email?: any;
 }
-
 
 /** Firestore */
 
@@ -42,7 +39,7 @@ export const db = getFirestore(firebase);
 
 /** Storage */
 
-export const createUserDocFromAuth = async (userAuth: UserAuth, additionalData: any) => {
+export const createUserDocFromAuth = async (userAuth: FirebaseUserAuth, additionalData: any) => {
     if (!userAuth) return;
 
     const userRef = doc(db, 'users', userAuth.uid);
