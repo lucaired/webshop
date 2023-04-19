@@ -1,5 +1,4 @@
 import { Fragment, useContext } from "react"; 
-import './NavBar.scss';
 /**
  * Renders nothing, but can have children. This allows us to render the NavBar
  * without having to use a surrounding div. Divs are fine normally, but they
@@ -16,10 +15,15 @@ const NavBar = () => {
     
     return (
         <Fragment>
-            <div className='navigation'>
-                <Link className='logo-container' to='/'>
-                </Link>
-                <div className='nav-links-container'>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '1rem',
+                }}
+            >
                 <Link className='nav-link' to='/shop'>
                     SHOP
                 </Link>
@@ -29,7 +33,6 @@ const NavBar = () => {
                     SIGN IN
                     </Link>
                 }                
-                </div>
             </div>
             <Outlet />
         </Fragment>
