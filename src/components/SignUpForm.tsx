@@ -1,4 +1,6 @@
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
+import { createAuthUserWithEmailAndPassword, createUserDocFromAuth } from "../utils/firebase";
+import { LocalUser, LocalUserContext } from "../contexts/UserContext";
 
 interface SignUpFields {
     name: string;
@@ -34,6 +36,8 @@ const SignUpInput = (props: SignUpInputProps) => {
 
 const SignUpForm = () => {
 
+    const { setLocalUser } = useContext(LocalUserContext);
+
     const [form, setForm] = useState<SignUpFields>({
         name: "",
         email: "",
@@ -42,7 +46,6 @@ const SignUpForm = () => {
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target);
         const { id, value } = e.target;
         // [attribute]: value is a computed property name
         setForm({
@@ -51,13 +54,29 @@ const SignUpForm = () => {
         });
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); // Prevents page refresh
         if (form.password !== form.confirmPassword) {
             alert("Passwords do not match");
             return;
         } else {
-            console.log(form);
+            try {
+                const userCredential = await createAuthUserWithEmailAndPassword(form.email, form.password);
+                if (!userCredential) {
+                    console.error('No user credential');
+                    return;
+                }
+                const newUser = await createUserDocFromAuth(userCredential, {displayName: form.name});
+                if (!newUser) {
+                    console.error('No new user');
+                    return;
+                }
+                console.log('New user created: ', newUser);
+                setLocalUser(new LocalUser(form.name,form.email,true));
+
+            } catch (error) {
+                console.error(error);
+            }
         }
     }
 

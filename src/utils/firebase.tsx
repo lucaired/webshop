@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import { DocumentData, DocumentReference, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import { LocalUser } from '../contexts/UserContext';
 
 /** Authentication */
 
@@ -42,7 +43,8 @@ export const createUserDocFromAuth = async (userAuth: FirebaseUserAuth, addition
     const snapShot = await getDoc(userRef);
 
     if (!snapShot.exists()) {
-        const { displayName, email } = userAuth;
+        let { displayName, email } = userAuth;
+
         const createdAt = new Date();
         try {
             await setDoc(userRef, {
@@ -57,3 +59,31 @@ export const createUserDocFromAuth = async (userAuth: FirebaseUserAuth, addition
     }
     return userRef;
 }
+
+export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
+    try {
+        const { user } = await createUserWithEmailAndPassword(auth, email, password);
+        return user;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const createNewUserFromFireBaseDoc = async (
+    userCredential: UserCredential,
+) => {
+    const userDocRef: DocumentReference<DocumentData> | undefined = await createUserDocFromAuth(userCredential.user, {});
+    if (!userDocRef) {
+        console.error('No doc avaliable');
+        return;
+    }
+    const userDoc: DocumentData | undefined = await getDoc(userDocRef);
+    if (!userDoc) {
+        console.error('Could not extract doc');
+        return;
+    }
+    const userData = userDoc.data();
+    const newUser: LocalUser = new LocalUser(userData.displayName, userData.email, true);
+
+    return newUser;
+};

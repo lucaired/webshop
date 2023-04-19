@@ -8,11 +8,11 @@ import './NavBar.scss';
  */
 
 import { Link, Outlet } from "react-router-dom"; // shows the child routes
-import { UserContext } from "../../contexts/UserContext";
+import { LocalUserContext } from "../../contexts/UserContext";
 
 const NavBar = () => {
 
-    const {user} = useContext(UserContext);
+    const { localUser } = useContext(LocalUserContext);
     
     return (
         <Fragment>
@@ -23,8 +23,8 @@ const NavBar = () => {
                 <Link className='nav-link' to='/shop'>
                     SHOP
                 </Link>
-                {user && user.isLoggedIn
-                 ? <p>{user?.name}</p>
+                {localUser && localUser.isLoggedIn
+                 ? <p>{localUser?.name}</p>
                  : <Link className='nav-link' to='/sign-in'>
                     SIGN IN
                     </Link>

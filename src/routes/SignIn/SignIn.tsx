@@ -1,13 +1,12 @@
-import { useContext } from "react";
-
 import { UserCredential } from "firebase/auth";
-import { createUserDocFromAuth, signInWithGooglePopup } from "../../utils/firebase";
-import { UserContext, User } from "../../contexts/UserContext";
-import { DocumentData, DocumentReference, getDoc } from "firebase/firestore";
+import { signInWithGooglePopup, createNewUserFromFireBaseDoc } from "../../utils/firebase";
 import SignUpForm from "../../components/SignUpForm";
+import { useContext } from "react";
+import { LocalUserContext } from "../../contexts/UserContext";
 
 const SignIn = () => {
-    const {setUser} = useContext(UserContext);
+
+    const { setLocalUser } = useContext(LocalUserContext);
 
     const logGoogleIn = async () => {
         const userCredential: UserCredential = await signInWithGooglePopup();
@@ -15,20 +14,14 @@ const SignIn = () => {
             console.error('No user credential');
             return;
         }
-        const userDocRef: DocumentReference<DocumentData> | undefined = await createUserDocFromAuth(userCredential.user, {});
-        if (!userDocRef) {
-            console.error('No doc avaliable');
+        const newUser = await createNewUserFromFireBaseDoc(userCredential);
+        if (!newUser) {
+            console.error('No new user');
             return;
         }
-        const userDoc: DocumentData | undefined = await getDoc(userDocRef);
-        if (!userDoc) {
-            console.error('Could not extract doc');
-            return;
-        }
-        const userData = userDoc.data();
-        const newUser: User = new User(userData.displayName, userData.email, true);
-        setUser(newUser)
-    };
+        setLocalUser(newUser);
+    }
+
     return (
         <div>
             <h1>Sign In</h1>

@@ -1,6 +1,6 @@
 import { createContext, useState } from 'react';
 
-export class User {
+export class LocalUser {
     name: string;
     email: string;
     isLoggedIn: boolean;
@@ -12,26 +12,26 @@ export class User {
     }
 }
 
-export const UserContext = createContext<{
-    user: User | null,
-    setUser: (user: User | null) => void
+export const LocalUserContext = createContext<{
+    localUser: LocalUser | null,
+    setLocalUser: (localUser: LocalUser | null) => void
 }
 >({
-    user: null,
-    setUser: (user: User | null) => {}
+    localUser: null,
+    setLocalUser: (localUser: LocalUser | null) => {}
 });
 
-interface UserContextProviderProps {
+interface LocalUserContextProviderProps {
     children: React.ReactNode;
 }
 
-export const UserContextProvider = (props: UserContextProviderProps) => {
-    const [user, setUser] = useState<User | null>(null);
+export const LocalUserContextProvider = (props: LocalUserContextProviderProps) => {
+    const [localUser, setLocalUser] = useState<LocalUser | null>(null);
     const {children} = props;
 
     return (
-        <UserContext.Provider value={{user, setUser}}>
+        <LocalUserContext.Provider value={{localUser, setLocalUser}}>
             {children}
-        </UserContext.Provider>
+        </LocalUserContext.Provider>
     );
 }
