@@ -1,8 +1,9 @@
 import { UserCredential } from "firebase/auth";
 import { signInWithGooglePopup, createNewUserFromFireBaseDoc } from "../../utils/firebase";
-import SignUpForm from "../../components/SignUpForm";
+import SignUpForm from "../../components/UserAccount/SignUpForm";
 import { useContext } from "react";
 import { LocalUserContext } from "../../contexts/UserContext";
+import SignInForm from "../../components/UserAccount/SignInForm";
 
 const SignIn = () => {
 
@@ -23,10 +24,26 @@ const SignIn = () => {
     }
 
     return (
-        <div>
-            <h1>Sign In</h1>
-            <button onClick={logGoogleIn}>Sign in with Google</button>
-            <SignUpForm/>
+        <div 
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+            }}
+        >
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <SignInForm/>
+                <button onClick={logGoogleIn}>Sign in with Google</button>
+            </div>
+            <div>
+                <SignUpForm/>
+            </div>
         </div>
     );
 }

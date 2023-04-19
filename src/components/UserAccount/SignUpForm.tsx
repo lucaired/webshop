@@ -1,37 +1,13 @@
 import { Fragment, useContext, useState } from "react";
-import { createAuthUserWithEmailAndPassword, createUserDocFromAuth } from "../utils/firebase";
-import { LocalUser, LocalUserContext } from "../contexts/UserContext";
+import { createAuthUserWithEmailAndPassword, createUserDocFromAuth } from "../../utils/firebase";
+import { LocalUser, LocalUserContext } from "../../contexts/UserContext";
+import { SignUpInput } from "./UserAccountInput";
 
 interface SignUpFields {
     name: string;
     email: string;
     password: string;
     confirmPassword: string;
-}
-
-interface SignUpInputProps {
-    type: string;
-    name: string;
-    label: string;
-    handler: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    value: string;
-}
-
-const SignUpInput = (props: SignUpInputProps) => {
-    const { type, name, label, handler, value } = props;
-    return (
-        <Fragment>
-            <label htmlFor={name}>{label}</label>
-            <input 
-                type={type}
-                name={name}
-                id={name}
-                required
-                onChange={handler}
-                value={value}
-            />
-        </Fragment>
-    )
 }
 
 const SignUpForm = () => {
@@ -73,7 +49,6 @@ const SignUpForm = () => {
                 }
                 console.log('New user created: ', newUser);
                 setLocalUser(new LocalUser(form.name,form.email,true));
-
             } catch (error) {
                 console.error(error);
             }
@@ -81,15 +56,25 @@ const SignUpForm = () => {
     }
 
     return (
-        <div>
-            <h1>Sign Up</h1>
+        <Fragment
+
+        >
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+            >
+                <h2>I do not have an account</h2>
+                <h3>Sign up with your email and password</h3>
+            </div>
             <form 
                 onSubmit={handleSubmit}
                 style={{
                     display: "flex", 
                     flexDirection: "column",
-                    alignItems: "center",
-                    rowGap: "0.5rem"
+                    rowGap: "0.5rem",
+                    alignContent: "flex-start"
                 }}
             >
                 <SignUpInput
@@ -122,7 +107,7 @@ const SignUpForm = () => {
                 />
                 <button type="submit">Sign Up</button>
             </form>
-        </div>
+        </Fragment>
     )
 }
 export default SignUpForm;
