@@ -4,6 +4,7 @@ import { UserCredential } from "firebase/auth";
 import { createUserDocFromAuth, signInWithGooglePopup } from "../../utils/firebase";
 import { UserContext, User } from "../../contexts/UserContext";
 import { DocumentData, DocumentReference, getDoc } from "firebase/firestore";
+import SignUpForm from "../../components/SignUpForm";
 
 const SignIn = () => {
     const {setUser} = useContext(UserContext);
@@ -32,6 +33,7 @@ const SignIn = () => {
         <div>
             <h1>Sign In</h1>
             <button onClick={logGoogleIn}>Sign in with Google</button>
+            <SignUpForm/>
         </div>
     );
 }

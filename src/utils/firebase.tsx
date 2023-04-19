@@ -1,12 +1,8 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 
 /** Authentication */
-
-// TODO: Replace the following with your app's Firebase project configuration
-// How to add react environment variables to vs code ?
-// https://stackoverflow.com/questions/56238356/using-environment-variables-in-react
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

@@ -1,4 +1,4 @@
-import { Fragment } from "react"; 
+import { Fragment, useContext } from "react"; 
 import './NavBar.scss';
 /**
  * Renders nothing, but can have children. This allows us to render the NavBar
@@ -8,8 +8,12 @@ import './NavBar.scss';
  */
 
 import { Link, Outlet } from "react-router-dom"; // shows the child routes
+import { UserContext } from "../../contexts/UserContext";
 
 const NavBar = () => {
+
+    const {user} = useContext(UserContext);
+    
     return (
         <Fragment>
             <div className='navigation'>
@@ -19,9 +23,12 @@ const NavBar = () => {
                 <Link className='nav-link' to='/shop'>
                     SHOP
                 </Link>
-                <Link className='nav-link' to='/sign-in'>
+                {user && user.isLoggedIn
+                 ? <p>{user?.name}</p>
+                 : <Link className='nav-link' to='/sign-in'>
                     SIGN IN
-                </Link>
+                    </Link>
+                }                
                 </div>
             </div>
             <Outlet />

@@ -1,4 +1,4 @@
-import CategoryContainer, { Category } from "../CategoryContainer/CategoryContainer";
+import CategoryContainer, { Category } from "./CategoryContainer/CategoryContainer";
 
 interface DirectoryProps {
     categories: Category[];
