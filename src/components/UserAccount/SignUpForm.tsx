@@ -56,9 +56,7 @@ const SignUpForm = () => {
     }
 
     return (
-        <Fragment
-
-        >
+        <Fragment>
             <div
                 style={{
                     display: "flex",
@@ -105,7 +103,17 @@ const SignUpForm = () => {
                     handler={handleChange}
                     value={form.confirmPassword}
                 />
-                <button type="submit">Sign Up</button>
+                <button 
+                    type="submit"
+                    style={{
+                        backgroundColor: 'black',
+                        color: 'white',
+                        border: 'none',
+                        padding: '0.5rem',
+                    }}
+                >
+                    Sign Up
+                </button>
             </form>
         </Fragment>
     )

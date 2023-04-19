@@ -1,5 +1,5 @@
 import { UserCredential } from "firebase/auth";
-import { signInWithGooglePopup, createNewUserFromFireBaseDoc } from "../../utils/firebase";
+import { signInWithGooglePopup, createLocalUserFromFirebase } from "../../utils/firebase";
 import SignUpForm from "../../components/UserAccount/SignUpForm";
 import { useContext } from "react";
 import { LocalUserContext } from "../../contexts/UserContext";
@@ -15,7 +15,7 @@ const SignIn = () => {
             console.error('No user credential');
             return;
         }
-        const newUser = await createNewUserFromFireBaseDoc(userCredential);
+        const newUser = await createLocalUserFromFirebase(userCredential);
         if (!newUser) {
             console.error('No new user');
             return;
@@ -39,7 +39,17 @@ const SignIn = () => {
                 }}
             >
                 <SignInForm/>
-                <button onClick={logGoogleIn}>Sign in with Google</button>
+                <button 
+                    onClick={logGoogleIn}
+                    style={{
+                        backgroundColor: 'blue',
+                        color: 'white',
+                        border: 'none',
+                        padding: '0.5rem',
+                    }}
+                >
+                    Sign in with Google
+                </button>
             </div>
             <div>
                 <SignUpForm/>

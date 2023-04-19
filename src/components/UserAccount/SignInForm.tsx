@@ -1,6 +1,8 @@
-import { Fragment, useContext, useState } from "react";
+import {  useContext, useState } from "react";
 import { LocalUser, LocalUserContext } from "../../contexts/UserContext";
 import { SignUpInput } from "./UserAccountInput";
+import { getUserDoc, loginWithMail } from "../../utils/firebase";
+import { User } from "firebase/auth";
 
 interface SignInFields {
     email: string;
@@ -32,7 +34,23 @@ const SignInForm = () => {
             return;
         } else {
             try {
-
+                const user: User = await loginWithMail(form.email, form.password);
+                const firebaseUserAuth = {
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    email: user.email,
+                } 
+                const userDoc = await getUserDoc(firebaseUserAuth);
+                if (!userDoc) {
+                    console.error('No user doc');
+                    return;
+                }
+                const localUser: LocalUser = {
+                    name: userDoc.displayName,
+                    email: userDoc.email,
+                    isLoggedIn: true
+                }
+                setLocalUser(localUser);
             } catch (error) {
                 console.error(error);
             }
@@ -73,7 +91,17 @@ const SignInForm = () => {
                     handler={handleChange}
                     value={form.password}
                 />
-                <button type="submit">Sign Up</button>
+                <button 
+                    type="submit"
+                    style={{
+                        backgroundColor: 'black',
+                        color: 'white',
+                        border: 'none',
+                        padding: '0.5rem',
+                    }}
+                >
+                    Sign Up
+                </button>
             </form>
         </div>
     )

@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, UserCredential, signInWithEmailAndPassword, User } from 'firebase/auth';
 import { DocumentData, DocumentReference, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 import { LocalUser } from '../contexts/UserContext';
 
@@ -60,6 +60,21 @@ export const createUserDocFromAuth = async (userAuth: FirebaseUserAuth, addition
     return userRef;
 }
 
+export const getUserDoc = async (userAuth: FirebaseUserAuth) => {
+    if (!userAuth) return;
+    try {
+        const userRef = doc(db, 'users', userAuth.uid);
+        const userSnapshot = await getDoc(userRef);
+        if (userSnapshot.exists()) {
+            return userSnapshot.data();
+        } else {
+            console.log('No such document!');
+        }
+    } catch (error) {
+        console.log('Error getting document:', error);
+    }
+}
+
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
     try {
         const { user } = await createUserWithEmailAndPassword(auth, email, password);
@@ -69,7 +84,17 @@ export const createAuthUserWithEmailAndPassword = async (email: string, password
     }
 }
 
-export const createNewUserFromFireBaseDoc = async (
+export const loginWithMail = async (email: string, password: string): Promise<User> => {
+    try {
+        const auth = getAuth();
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        return new Promise((resolve) => resolve(userCredential.user));
+    } catch (error) {
+        return Promise.reject(error);
+    }
+
+} 
+export const createLocalUserFromFirebase = async (
     userCredential: UserCredential,
 ) => {
     const userDocRef: DocumentReference<DocumentData> | undefined = await createUserDocFromAuth(userCredential.user, {});
