@@ -1,6 +1,7 @@
 import {  useState } from "react";
 import { SignUpInput } from "./UserAccountInput";
 import { loginWithMail } from "../../utils/firebase";
+import { useNavigate } from "react-router-dom";
 
 interface SignInFields {
     email: string;
@@ -9,7 +10,7 @@ interface SignInFields {
 
 const SignInForm = () => {
 
-    // setting the user will cause the app to re-render
+    const navigate = useNavigate();
 
     const [form, setForm] = useState<SignInFields>({
         email: "",
@@ -33,6 +34,7 @@ const SignInForm = () => {
         } else {
             try {
                 await loginWithMail(form.email, form.password);
+                navigate("/shop");
             } catch (error) {
                 console.error(error);
             }

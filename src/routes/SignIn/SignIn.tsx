@@ -1,26 +1,15 @@
-import { UserCredential } from "firebase/auth";
-import { signInWithGooglePopup, createLocalUserFromFirebase } from "../../utils/firebase";
+import { signInWithGooglePopup } from "../../utils/firebase";
 import SignUpForm from "../../components/UserAccount/SignUpForm";
-import { useContext } from "react";
-import { LocalUserContext } from "../../contexts/UserContext";
 import SignInForm from "../../components/UserAccount/SignInForm";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
 
-    const { setLocalUser } = useContext(LocalUserContext);
+    const navigate = useNavigate();
 
     const logGoogleIn = async () => {
-        const userCredential: UserCredential = await signInWithGooglePopup();
-        if (!userCredential) {
-            console.error('No user credential');
-            return;
-        }
-        const newUser = await createLocalUserFromFirebase(userCredential);
-        if (!newUser) {
-            console.error('No new user');
-            return;
-        }
-        setLocalUser(newUser);
+        await signInWithGooglePopup();
+        navigate("/shop");
     }
 
     return (
