@@ -112,3 +112,9 @@ export const createLocalUserFromFirebase = async (
 
     return newUser;
 };
+
+export const signOutUser = async () => {
+    const auth = getAuth();
+    const res = await auth.signOut();
+    return res;
+}

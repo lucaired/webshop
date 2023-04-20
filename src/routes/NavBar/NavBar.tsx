@@ -8,11 +8,17 @@ import { Fragment, useContext } from "react";
 
 import { Link, Outlet } from "react-router-dom"; // shows the child routes
 import { LocalUserContext } from "../../contexts/UserContext";
+import { signOutUser } from "../../utils/firebase";
 
 const NavBar = () => {
 
-    const { localUser } = useContext(LocalUserContext);
+    const { localUser, setLocalUser } = useContext(LocalUserContext);
     
+    const signOutHandler = async () => {
+         await signOutUser();
+         setLocalUser(null);
+    }
+
     return (
         <Fragment>
             <div
@@ -28,9 +34,19 @@ const NavBar = () => {
                     SHOP
                 </Link>
                 {localUser && localUser.isLoggedIn
-                 ? <p>{localUser?.name}</p>
-                 : <Link className='nav-link' to='/sign-in'>
-                    SIGN IN
+                 ? <p
+                        onClick={() => signOutHandler()}
+                        style={{
+                            textDecoration: 'underline',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        SIGN OUT
+                    </p>
+                 : <Link 
+                        to='/sign-in'
+                    >
+                        SIGN IN
                     </Link>
                 }                
             </div>

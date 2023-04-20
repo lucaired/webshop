@@ -11,6 +11,7 @@ interface SignInFields {
 
 const SignInForm = () => {
 
+    // setting the user will cause the app to re-render
     const { setLocalUser } = useContext(LocalUserContext);
 
     const [form, setForm] = useState<SignInFields>({
@@ -35,6 +36,7 @@ const SignInForm = () => {
         } else {
             try {
                 const user: User = await loginWithMail(form.email, form.password);
+
                 const firebaseUserAuth = {
                     uid: user.uid,
                     displayName: user.displayName,
@@ -51,6 +53,7 @@ const SignInForm = () => {
                     isLoggedIn: true
                 }
                 setLocalUser(localUser);
+
             } catch (error) {
                 console.error(error);
             }
