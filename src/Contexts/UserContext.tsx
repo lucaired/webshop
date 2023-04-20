@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import { getUserDoc, onAuthStateChanged } from '../utils/firebase';
 
 export class LocalUser {
     name: string;
@@ -28,6 +29,27 @@ interface LocalUserContextProviderProps {
 export const LocalUserContextProvider = (props: LocalUserContextProviderProps) => {
     const [localUser, setLocalUser] = useState<LocalUser | null>(null);
     const {children} = props;
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(async (user) => {
+            if (user) {
+                const firebaseUserAuth = {
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    email: user.email,
+                } 
+                const userDoc = await getUserDoc(firebaseUserAuth);
+                if (!userDoc) {
+                    console.error('No user doc');
+                    return;
+                }
+                setLocalUser(new LocalUser(userDoc.displayName || 'No name', userDoc.email || 'No mail', true));
+            } else {
+                setLocalUser(null);
+            }
+        });
+        return unsubscribe;
+    }, []);
 
     return (
         <LocalUserContext.Provider value={{localUser, setLocalUser}}>

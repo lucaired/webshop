@@ -1,6 +1,5 @@
-import { Fragment, useContext, useState } from "react";
-import { createAuthUserWithEmailAndPassword, createUserDocFromAuth } from "../../utils/firebase";
-import { LocalUser, LocalUserContext } from "../../contexts/UserContext";
+import { Fragment, useState } from "react";
+import { createAuthUserWithEmailAndPassword } from "../../utils/firebase";
 import { SignUpInput } from "./UserAccountInput";
 
 interface SignUpFields {
@@ -11,8 +10,6 @@ interface SignUpFields {
 }
 
 const SignUpForm = () => {
-
-    const { setLocalUser } = useContext(LocalUserContext);
 
     const [form, setForm] = useState<SignUpFields>({
         name: "",
@@ -37,18 +34,7 @@ const SignUpForm = () => {
             return;
         } else {
             try {
-                const userCredential = await createAuthUserWithEmailAndPassword(form.email, form.password);
-                if (!userCredential) {
-                    console.error('No user credential');
-                    return;
-                }
-                const newUser = await createUserDocFromAuth(userCredential, {displayName: form.name});
-                if (!newUser) {
-                    console.error('No new user');
-                    return;
-                }
-                console.log('New user created: ', newUser);
-                setLocalUser(new LocalUser(form.name,form.email,true));
+                await createAuthUserWithEmailAndPassword(form.email, form.password);
             } catch (error) {
                 console.error(error);
             }

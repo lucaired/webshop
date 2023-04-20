@@ -94,6 +94,7 @@ export const loginWithMail = async (email: string, password: string): Promise<Us
     }
 
 } 
+
 export const createLocalUserFromFirebase = async (
     userCredential: UserCredential,
 ) => {
@@ -117,4 +118,14 @@ export const signOutUser = async () => {
     const auth = getAuth();
     const res = await auth.signOut();
     return res;
+}
+
+export const onAuthStateChanged = (callback: (user: User | null) => void) => {
+    /**
+     * This function is used to listen to auth state changes.
+     * Permantly listening to auth state changes is not recommended.
+     * 
+     */
+    const auth = getAuth();
+    return auth.onAuthStateChanged(callback);
 }
