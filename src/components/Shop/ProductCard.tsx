@@ -55,7 +55,7 @@ const ProductCard = (props: ProductCardProps) => {
                 </span>
             </div>
             <button>
-                Add to card
+                ADD TO CART
             </button>
         </div>
     )
