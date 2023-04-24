@@ -1,4 +1,10 @@
+import { useContext } from "react";
+import { CartContext } from "../../contexts/CartContext";
+import CartItemCard from "./CartItemCard";
+
 const CartDropDown = () => {
+    const { cartItems } = useContext(CartContext)
+
     return (
         <div
             style={{
@@ -15,11 +21,12 @@ const CartDropDown = () => {
                 zIndex: 5
             }}
         >
-            <div
-            >
-                <p>Product 1</p>
-                <p>Product 2</p>
-                <p>Product 3</p>
+            <div>
+                {cartItems.map((cartItem, index) => <CartItemCard 
+                    cartItem={cartItem}
+                    key={index+cartItem.product.id}
+                    />
+                )}
             </div>
             <button
                 style={{
