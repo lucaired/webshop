@@ -3,7 +3,7 @@ import { CartContext } from "../../contexts/CartContext";
 import CartItemCard from "./CartItemCard";
 
 const CartDropDown = () => {
-    const { cartItems } = useContext(CartContext)
+    const { cartItems, cartItemsCount } = useContext(CartContext)
 
     return (
         <div
@@ -21,10 +21,16 @@ const CartDropDown = () => {
                 zIndex: 5
             }}
         >
-            <div>
-                {cartItems.map((cartItem, index) => <CartItemCard 
-                    cartItem={cartItem}
-                    key={index+cartItem.product.id}
+            <div
+                style={{
+                    // otherwise the scroll bar will look weird
+                    overflowY: cartItemsCount > 3 ? 'scroll' : 'hidden',
+                }}
+            >
+                {cartItems.map((cartItem, index) => 
+                    <CartItemCard 
+                        cartItem={cartItem}
+                        key={index+cartItem.product.id}
                     />
                 )}
             </div>

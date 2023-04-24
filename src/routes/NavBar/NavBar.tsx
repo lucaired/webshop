@@ -22,7 +22,7 @@ const NavBar = () => {
          setLocalUser(null);
     }
 
-    const {isCartHidden, setIsCartHidden} = useContext(CartContext);
+    const {isCartHidden, setIsCartHidden, cartItemsCount} = useContext(CartContext);
 
     return (
         <Fragment>
@@ -63,7 +63,7 @@ const NavBar = () => {
                         </Link>
                     }
                     <CartIcon
-                        onClickHandler={() => setIsCartHidden(!isCartHidden)}
+                        onClickHandler={() => cartItemsCount && setIsCartHidden(!isCartHidden)}
                     />      
                 </div>
                 {!isCartHidden && <CartDropDown/>}
