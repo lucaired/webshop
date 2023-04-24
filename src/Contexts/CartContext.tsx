@@ -66,6 +66,7 @@ export const CartContext = createContext<{
     isCartHidden: boolean,
     setIsCartHidden: (isCartHidden: boolean) => void,
     cartItemsCount: number
+    cartTotal: number
 }>({
     cartItems: [],
     addCartItem: (cartItem: Product) => {},
@@ -74,7 +75,8 @@ export const CartContext = createContext<{
     setCartItemQuantity: (cartItem: Product, quantity: number) => {},
     incrementCartItemQuantity: (cartItem: Product, delta: number) => {},
     isCartHidden: true,
-    cartItemsCount: 0
+    cartItemsCount: 0,
+    cartTotal: 0,
 });
 
 interface CartContextProviderProps {
@@ -87,11 +89,16 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
     const [isCartHidden, setIsCartHidden] = useState(true);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [cartItemsCount, setCartItemsCount] = useState(0);
+    const [cartTotal, setCartTotal] = useState(0);
 
     useEffect(() => {
         let count = 0;
         cartItems.forEach(cartItem => count += cartItem.quantity);
         setCartItemsCount(count);
+
+        setCartTotal(
+            cartItems.reduce((total, cartItem) => total += cartItem.quantity * cartItem.product.price, 0)
+        );
     }, [cartItems])
 
     const addCartItem = (cartItem: Product) => setCartItems(cartItems => addItemToItems(cartItem, cartItems));
@@ -107,7 +114,8 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
         setCartItemQuantity,
         incrementCartItemQuantity,
         isCartHidden,
-        cartItemsCount
+        cartItemsCount,
+        cartTotal
     };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>
