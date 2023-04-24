@@ -20,9 +20,14 @@ const addItemToItems = (newProduct: Product, items: CartItem[]): CartItem[] => {
         }
     })
 
+    // make sure to always return a new array when doing state updates, otherwise stuff will not fire
+
     if (index !== -1) {
-        items[index].quantity += 1
-        return items
+        return items.map((currentItem, currentIndex) => {
+            return (currentIndex === index) 
+            ? new CartItem(currentItem.product, currentItem.quantity + 1)
+            : currentItem;
+        });
     } else {
         return [...items, new CartItem(newProduct, 1)]
     }
@@ -49,7 +54,7 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
 
     const [isCartHidden, setIsCartHidden] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
-    const addCartItem = (cartItem: Product) => setCartItems(addItemToItems(cartItem, cartItems));
+    const addCartItem = (cartItem: Product) => setCartItems(cartItems => addItemToItems(cartItem, cartItems));
     const value = { isCartHidden, setIsCartHidden, cartItems, addCartItem };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>
