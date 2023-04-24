@@ -1,9 +1,12 @@
 import { useContext } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import CartItemCard from "./CartItemCard";
+import { useNavigate } from "react-router-dom";
 
 const CartDropDown = () => {
     const { cartItems } = useContext(CartContext)
+    const navigate = useNavigate();
+
 
     return (
         <div
@@ -38,6 +41,7 @@ const CartDropDown = () => {
                 style={{
                     marginTop: 'auto',
                 }}
+                onClick={()=>navigate('/checkout')}
             >
                 GO TO CHECKOUT
             </button>

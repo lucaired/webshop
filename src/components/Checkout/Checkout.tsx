@@ -1,5 +1,6 @@
 import { Fragment, useContext } from "react";
 import { CartContext, CartItem } from "../../contexts/CartContext";
+import './checkout.scss';
 
 interface CheckoutCardProps {
     cartItem: CartItem;
@@ -7,13 +8,8 @@ interface CheckoutCardProps {
 
 const CheckoutCard = (props: CheckoutCardProps) => {
     const { cartItem } = props;
-    const { removeCartItem, incrementCartItemQuantity } = useContext(CartContext);
-
-    /**
-     * Create on-click handler that checks first what the action would do, if the
-     * quantiy reaches zero, we remove the item from the cart, else we simple 
-     * apply the delta.
-     */
+    const { removeCartItem, incrementCartItemQuantity, setIsCartHidden } = useContext(CartContext);
+    setIsCartHidden(true);
 
     const handler = (direction: string) => {
         if (direction === 'up') {
@@ -29,6 +25,7 @@ const CheckoutCard = (props: CheckoutCardProps) => {
     }
 
     return <div
+        className="checkout-card"
         style={{
             display: 'grid',
             gridTemplateColumns: '10% 40% 20% 20% 10%',
@@ -54,7 +51,7 @@ const CheckoutCard = (props: CheckoutCardProps) => {
                 }}
                 onClick={()=>handler('down')}
             >
-                {'< '}
+                {'<  '}
             </span>
             {cartItem.quantity}
             <span
@@ -64,17 +61,17 @@ const CheckoutCard = (props: CheckoutCardProps) => {
                 }}
                 onClick={()=>handler('up')}
             >
-                {' >'}
+                {'  >'}
             </span>
         </span>
-        <span>{cartItem.product.price}</span>
+        <span>{cartItem.product.price} €</span>
         <span 
             onClick={()=>removeCartItem(cartItem.product)}
             style={{
                 cursor: 'pointer',
             }}
         >
-            X
+            &#10005;
         </span>
     </div>
 }
@@ -87,11 +84,14 @@ const Checkout = () => {
 
     return (
         <Fragment>
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: '10% 40% 20% 20% 10%',
-                borderBottom: '1px solid black',
-            }}>
+            <div 
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: '10% 40% 20% 20% 10%',
+                    borderBottom: '1px solid black',
+                }}
+                className="checkout-title-bar"
+            >
                 {titles.map((title)=><span>{title}</span>)}
             </div>
             <div
