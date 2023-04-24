@@ -24,7 +24,7 @@ const CartDropDown = () => {
             <div
                 style={{
                     // otherwise the scroll bar will look weird
-                    overflowY: cartItemsCount > 3 ? 'scroll' : 'hidden',
+                    overflowY: cartItems.length > 3 ? 'scroll' : 'hidden',
                 }}
             >
                 {cartItems.map((cartItem, index) => 

@@ -1,11 +1,47 @@
-import { CartItem } from "../../contexts/CartContext";
+import { Fragment, useContext } from "react";
+import { CartContext, CartItem } from "../../contexts/CartContext";
+
+const CartItemQuantity = (props: CartItemCardProps) => {
+
+    const { removeCartItem, setCartItemQuantity, incrementCartItemQuantity } = useContext(CartContext);
+
+    const handler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        if (parseInt(e.target.value) === 0) {
+            removeCartItem(props.cartItem.product)
+        } else if (parseInt(e.target.value) === 10) {
+            incrementCartItemQuantity(props.cartItem.product, 10)
+        } else {
+            setCartItemQuantity(props.cartItem.product, parseInt(e.target.value))
+        }
+    }
+
+    return (
+        <Fragment>
+            <select 
+                name="quantity" 
+                id="quantity"
+                onChange={handler}
+                title="Quantity"
+            >
+                <option value="0">0 (Remove)</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </Fragment>
+    )
+}
 
 interface  CartItemCardProps {
     cartItem: CartItem
 }
 
 const CartItemCard = (props: CartItemCardProps) => {
+
     const { product, quantity } = props.cartItem
+    const { removeCartItem } = useContext(CartContext);
 
     return (
         <div
@@ -27,13 +63,41 @@ const CartItemCard = (props: CartItemCardProps) => {
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                    padding: '10px 20px'
+                    justifyContent: 'space-between',
+                    padding: '0 10px',
                 }}
-            >
-                <span>{product.name}</span>
-                <span>{product.price} x {quantity}</span>
+            >   
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}
+                >
+                    <span>{product.name}</span>
+                    <span>Price: {' '}
+                        <span style={{
+                            fontWeight: 'bold',
+                        }}>{product.price * quantity} €</span>
+                    </span>
+                </div>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <CartItemQuantity 
+                        cartItem={props.cartItem} 
+                    />
+                    <button
+                        onClick={() => removeCartItem(product)}
+                    >
+                        Remove
+                    </button>
+                </div>
+            </div>
+            <div>
             </div>
         </div>
     );
