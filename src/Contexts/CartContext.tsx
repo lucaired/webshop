@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Product } from "./ProductsContext";
 
 export class CartItem {
@@ -37,12 +37,14 @@ export const CartContext = createContext<{
     cartItems: CartItem[],
     addCartItem: (cartItem: Product) => void
     isCartHidden: boolean,
-    setIsCartHidden: (isCartHidden: boolean) => void
+    setIsCartHidden: (isCartHidden: boolean) => void,
+    cartItemsCount: number
 }>({
     cartItems: [],
     addCartItem: (cartItem: Product) => {},
     isCartHidden: true,
     setIsCartHidden: (isCartHidden: boolean) => {},
+    cartItemsCount: 0
 });
 
 interface CartContextProviderProps {
@@ -54,8 +56,17 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
 
     const [isCartHidden, setIsCartHidden] = useState(false);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [cartItemsCount, setCartItemsCount] = useState(0);
+
+    useEffect(() => {
+        let count = 0;
+        cartItems.forEach(cartItem => count += cartItem.quantity);
+        setCartItemsCount(count);
+    }, [cartItems])
+
     const addCartItem = (cartItem: Product) => setCartItems(cartItems => addItemToItems(cartItem, cartItems));
-    const value = { isCartHidden, setIsCartHidden, cartItems, addCartItem };
+    
+    const value = { isCartHidden, setIsCartHidden, cartItems, addCartItem, cartItemsCount };
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }

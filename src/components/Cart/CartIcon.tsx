@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 // Use a SVG as a React Component !!!
 import { ReactComponent as ShoppingIcon } from './shopping-bag.svg';
-import { CartContext, CartItem } from '../../contexts/CartContext';
+import { CartContext } from '../../contexts/CartContext';
 
 interface CartIconProps {
     onClickHandler: () => void;
@@ -11,13 +11,7 @@ interface CartIconProps {
 const CartIcon = (props: CartIconProps) => {
     const { onClickHandler } = props;
 
-    const { cartItems } = useContext(CartContext);
-
-    const countProductsInCart = () => {
-        let productCount = 0;
-        cartItems.forEach((item: CartItem) => productCount += item.quantity)
-        return productCount;
-    }
+    const { cartItemsCount } = useContext(CartContext);
     
     return (
         <div
@@ -46,7 +40,7 @@ const CartIcon = (props: CartIconProps) => {
                     bottom: '12px'
                 }}
             >
-                {countProductsInCart() || ''}
+                {cartItemsCount || ''}
             </span>
         </div>
     )
