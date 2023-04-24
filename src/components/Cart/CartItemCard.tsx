@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react";
+import { useContext } from "react";
 import { CartContext, CartItem } from "../../contexts/CartContext";
 
 const CartItemQuantity = (props: CartItemCardProps) => {
@@ -16,12 +16,23 @@ const CartItemQuantity = (props: CartItemCardProps) => {
     }
 
     return (
-        <Fragment>
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+            }}
+        >
+            <label htmlFor="quantity">Quantity: </label>
             <select 
                 name="quantity" 
                 id="quantity"
                 onChange={handler}
+                value={props.cartItem.quantity}
                 title="Quantity"
+                style={{
+                    marginLeft: '5px',
+                    width: '50px'
+                }}
             >
                 <option value="0">0 (Remove)</option>
                 <option value="1">1</option>
@@ -30,7 +41,7 @@ const CartItemQuantity = (props: CartItemCardProps) => {
                 <option value="4">4</option>
                 <option value="5">5</option>
             </select>
-        </Fragment>
+        </div>
     )
 }
 
@@ -80,22 +91,14 @@ const CartItemCard = (props: CartItemCardProps) => {
                         }}>{product.price * quantity} €</span>
                     </span>
                 </div>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                    }}
+                <CartItemQuantity 
+                    cartItem={props.cartItem} 
+                />
+                <button
+                    onClick={() => removeCartItem(product)}
                 >
-                    <CartItemQuantity 
-                        cartItem={props.cartItem} 
-                    />
-                    <button
-                        onClick={() => removeCartItem(product)}
-                    >
-                        Remove
-                    </button>
-                </div>
+                    Remove
+                </button>
             </div>
             <div>
             </div>

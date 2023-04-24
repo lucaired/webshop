@@ -3,7 +3,7 @@ import { CartContext } from "../../contexts/CartContext";
 import CartItemCard from "./CartItemCard";
 
 const CartDropDown = () => {
-    const { cartItems, cartItemsCount } = useContext(CartContext)
+    const { cartItems } = useContext(CartContext)
 
     return (
         <div
