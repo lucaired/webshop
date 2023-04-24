@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react"; 
+import { Fragment, useContext, useState } from "react"; 
 /**
  * Renders nothing, but can have children. This allows us to render the NavBar
  * without having to use a surrounding div. Divs are fine normally, but they
@@ -9,6 +9,9 @@ import { Fragment, useContext } from "react";
 import { Link, Outlet } from "react-router-dom"; // shows the child routes
 import { LocalUserContext } from "../../contexts/UserContext";
 import { signOutUser } from "../../utils/firebase";
+import CartIcon from "../../components/Cart/CartIcon";
+import CartDropDown from "../../components/Cart/CartDropDown";
+import { CartContext } from "../../contexts/CartContext";
 
 const NavBar = () => {
 
@@ -18,6 +21,8 @@ const NavBar = () => {
          await signOutUser();
          setLocalUser(null);
     }
+
+    const {isCartHidden, setIsCartHidden} = useContext(CartContext);
 
     return (
         <Fragment>
@@ -33,22 +38,35 @@ const NavBar = () => {
                 <Link className='nav-link' to='/shop'>
                     SHOP
                 </Link>
-                {localUser && localUser.isLoggedIn
-                 ? <p
-                        onClick={() => signOutHandler()}
-                        style={{
-                            textDecoration: 'underline',
-                            cursor: 'pointer',
-                        }}
-                    >
-                        SIGN OUT
-                    </p>
-                 : <Link 
-                        to='/sign-in'
-                    >
-                        SIGN IN
-                    </Link>
-                }                
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    {localUser && localUser.isLoggedIn
+                    ? <p
+                            onClick={() => signOutHandler()}
+                            style={{
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                            }}
+                        >
+                            SIGN OUT
+                        </p>
+                    : <Link 
+                            to='/sign-in'
+                        >
+                            SIGN IN
+                        </Link>
+                    }
+                    <CartIcon
+                        onClickHandler={() => setIsCartHidden(!isCartHidden)}
+                    />      
+                </div>
+                {!isCartHidden && <CartDropDown/>}
             </div>
             <Outlet />
         </Fragment>
