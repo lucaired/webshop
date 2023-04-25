@@ -55,12 +55,8 @@ const ProductCard = (props: ProductCardProps) => {
                 >
                     {name}
                 </span>
-                <span
-                    style={{
-                        width:"10%",
-                    }}
-                >
-                    {price}
+                <span>
+                    {price}€
                 </span>
             </div>
             <button

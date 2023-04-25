@@ -1,18 +1,14 @@
-import { useContext } from "react";
-import { CategoriesContext } from "../../contexts/CategoryContext";
-import CategoryPreview from "./CategoryPreview";
+import { Route, Routes } from "react-router-dom";
+import CategoryPreview from "./CategoryPreviewPage";
+import CategoryFullPage from "./CategoryFullPage";
 
 const Shop = () => {
 
-    const { categories } = useContext(CategoriesContext);
-    console.log(categories);
-
     return (
-        <div>
-            {Array.from(categories.keys()).map((category, index) => 
-                <CategoryPreview key={index} category={category} index={index} products={categories.get(category) || []} />)
-            }
-        </div>
+        <Routes>
+            <Route index element={<CategoryPreview />} />
+            <Route path=':categorySlug' element={<CategoryFullPage />} />
+        </Routes>
     );
 }
 export default Shop;
