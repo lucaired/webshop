@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, UserCredential, signInWithEmailAndPassword, User } from 'firebase/auth';
-import { DocumentData, DocumentReference, doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
+import { DocumentData, DocumentReference, collection, doc, getDoc, getFirestore, setDoc, writeBatch, getDocs } from 'firebase/firestore';
 import { LocalUser } from '../contexts/UserContext';
 
 /** Authentication */
@@ -33,47 +33,6 @@ interface FirebaseUserAuth {
 /** Firestore */
 
 export const db = getFirestore(firebase);
-
-/** Storage */
-
-export const createUserDocFromAuth = async (userAuth: FirebaseUserAuth, additionalData: any) => {
-    if (!userAuth) return;
-
-    const userRef = doc(db, 'users', userAuth.uid);
-    const snapShot = await getDoc(userRef);
-
-    if (!snapShot.exists()) {
-        let { displayName, email } = userAuth;
-
-        const createdAt = new Date();
-        try {
-            await setDoc(userRef, {
-                displayName,
-                email,
-                createdAt,
-                ...additionalData
-            });
-        } catch (error) {
-            console.log('error creating user', error);
-        }
-    }
-    return userRef;
-}
-
-export const getUserDoc = async (userAuth: FirebaseUserAuth) => {
-    if (!userAuth) return;
-    try {
-        const userRef = doc(db, 'users', userAuth.uid);
-        const userSnapshot = await getDoc(userRef);
-        if (userSnapshot.exists()) {
-            return userSnapshot.data();
-        } else {
-            console.log('No such document!');
-        }
-    } catch (error) {
-        console.log('Error getting document:', error);
-    }
-}
 
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
     try {
@@ -128,4 +87,62 @@ export const onAuthStateChanged = (callback: (user: User | null) => void) => {
      */
     const auth = getAuth();
     return auth.onAuthStateChanged(callback);
+}
+
+/** Storage */
+
+export const createUserDocFromAuth = async (userAuth: FirebaseUserAuth, additionalData: any) => {
+    if (!userAuth) return;
+
+    const userRef = doc(db, 'users', userAuth.uid);
+    const snapShot = await getDoc(userRef);
+
+    if (!snapShot.exists()) {
+        let { displayName, email } = userAuth;
+
+        const createdAt = new Date();
+        try {
+            await setDoc(userRef, {
+                displayName,
+                email,
+                createdAt,
+                ...additionalData
+            });
+        } catch (error) {
+            console.log('error creating user', error);
+        }
+    }
+    return userRef;
+}
+
+export const getUserDoc = async (userAuth: FirebaseUserAuth) => {
+    if (!userAuth) return;
+    try {
+        const userRef = doc(db, 'users', userAuth.uid);
+        const userSnapshot = await getDoc(userRef);
+        if (userSnapshot.exists()) {
+            return userSnapshot.data();
+        } else {
+            console.log('No such document!');
+        }
+    } catch (error) {
+        console.log('Error getting document:', error);
+    }
+}
+
+export const addCollectionAndDocuments = async (collectionKey: string, objectsToAdd: any) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+    objectsToAdd.forEach((obj: any) => {
+        const newDocRef = doc(collectionRef);
+        batch.set(newDocRef, obj);
+    });
+    return await batch.commit();
+}
+
+export const getDocumentsFromCollection = async (collectionKey: string) => {
+    const collectionRef = collection(db, collectionKey);
+    const collectionSnapshot = await getDocs(collectionRef);
+    const collectionMap = collectionSnapshot.docs.map((doc: any) => doc.data());
+    return collectionMap;
 }

@@ -1,6 +1,7 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import SHOP_DATA from './shop-data.json';
+import { addCollectionAndDocuments, getDocumentsFromCollection } from "../utils/firebase";
 
 /**
  * - Define the Product class
@@ -40,10 +41,17 @@ interface ProductsContextProviderProps {
 export const ProductsContextProvider = (props: ProductsContextProviderProps) => {
 
     const {children} = props;
+    const [products, setProducts] = useState<Product[]>([]);
 
-    const [products, setProducts] = useState<Product[]>(
-        SHOP_DATA.map((item, index) => new Product(index, item.name, item.imageUrl, item.price))
-    );
+    useEffect(() => {
+        const queryProducts = async () => {
+            const newProducts = await getDocumentsFromCollection('collections');
+            if (newProducts !== undefined) {
+                setProducts(() => newProducts.map((item, index) => new Product(index, item.name, item.imageUrl, item.price)));
+            }
+        }
+        queryProducts();
+    }, []);
 
     return (
         <ProductsContext.Provider value={{
