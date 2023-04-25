@@ -35,9 +35,21 @@ const NavBar = () => {
                     padding: '1rem',
                 }}
             >
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: '1rem',
+                    }}
+                >
+                <Link className='nav-link' to='/home'>
+                    HOME
+                </Link>
                 <Link className='nav-link' to='/shop'>
                     SHOP
                 </Link>
+                </div>
                 <div
                     style={{
                         display: 'flex',

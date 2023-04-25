@@ -7,7 +7,6 @@ const CategoryFullPage = () => {
     
     const { categories } = useContext(CategoriesContext);
     const { categorySlug } = useParams<{categorySlug: string}>();
-    console.log(categorySlug);
     const products: Product[] = categorySlug ? categories.get(categorySlug) || [] : []; 
 
     return (

@@ -37,8 +37,8 @@ interface CategoriesContextProviderProps {
 
 export const CategoriesContextProvider = (props: CategoriesContextProviderProps) => {
 
-    const {children} = props;
     const { categories, error, loading } = useCategories()
+    const {children} = props;
 
     return (
         <CategoriesContext.Provider value={{

@@ -2,6 +2,7 @@
  * React does not recoomend reusing of CSS classes. So Sass might be 
  * useless in this case. But I will use it anyway to stay in line with the tutorial.
  */
+import { useNavigate } from 'react-router-dom';
 import './CategoryContainer.scss';
 
 export interface Category {
@@ -16,8 +17,12 @@ export interface CategoryContainerProps {
 
 const CategoryContainer = (props: CategoryContainerProps) => {
     const { title, imageUrl } = props.category;
+    const navigage = useNavigate();
+
     return (
-      <div className="category-container">
+      <div className="category-container"
+        onClick={() => navigage(`/shop/${title}`)}
+      >
         <div 
           className="background-image"
           style={{backgroundImage: `url(${imageUrl})`}}
