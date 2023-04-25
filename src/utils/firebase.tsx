@@ -132,9 +132,12 @@ export const getUserDoc = async (userAuth: FirebaseUserAuth) => {
 
 export const addCollectionAndDocuments = async (collectionKey: string, objectsToAdd: any) => {
     const collectionRef = collection(db, collectionKey);
+    // This allows us to batch write to the database, which is more efficient
+    // and prevents us from hitting the rate limit. Furthermore, it allows us
+    // to rollback the entire batch if one of the writes fails.
     const batch = writeBatch(db);
     objectsToAdd.forEach((obj: any) => {
-        const newDocRef = doc(collectionRef);
+        const newDocRef = doc(collectionRef, obj.title.toLowerCase());
         batch.set(newDocRef, obj);
     });
     return await batch.commit();

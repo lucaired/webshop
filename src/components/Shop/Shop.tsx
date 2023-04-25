@@ -1,20 +1,17 @@
 import { useContext } from "react";
-import { ProductsContext } from "../../contexts/ProductsContext";
-import ProductCard from "./ProductCard";
+import { CategoriesContext } from "../../contexts/CategoryContext";
+import CategoryPreview from "./CategoryPreview";
 
 const Shop = () => {
 
-    const { products } = useContext(ProductsContext);
+    const { categories } = useContext(CategoriesContext);
+    console.log(categories);
 
     return (
-        <div
-            style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gridGap: '10px'
-            }}
-        >
-            {products.map((product, index) => <ProductCard key={index} product={product} />)}
+        <div>
+            {Array.from(categories.keys()).map((category, index) => 
+                <CategoryPreview key={index} category={category} index={index} products={categories.get(category) || []} />)
+            }
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { Product } from "./ProductsContext";
+import { Product } from "./CategoryContext";
 
 export class CartItem {
     product: Product;
