@@ -95,10 +95,14 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
         let count = 0;
         cartItems.forEach(cartItem => count += cartItem.quantity);
         setCartItemsCount(count);
+        if (count === 0) {
+            setIsCartHidden(true);
+        }
 
         setCartTotal(
             cartItems.reduce((total, cartItem) => total += cartItem.quantity * cartItem.product.price, 0)
         );
+
     }, [cartItems])
 
     const addCartItem = (cartItem: Product) => setCartItems(cartItems => addItemToItems(cartItem, cartItems));
