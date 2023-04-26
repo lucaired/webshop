@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
+
+import App from './App';
+import './index.css';
 import { LocalUserContextProvider } from './Contexts/LocalUserContext';
 import { CategoriesContextProvider } from './Contexts/CategoryContext';
 import { CartContextProvider } from './Contexts/CartContext';
@@ -22,6 +24,8 @@ root.render(
         </CategoriesContextProvider>
       </LocalUserContextProvider>
     </BrowserRouter>
+    <Analytics />
+    
   </React.StrictMode>
 );
 
