@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from "react"; 
+import { Fragment, useContext } from "react"; 
 /**
  * Renders nothing, but can have children. This allows us to render the NavBar
  * without having to use a surrounding div. Divs are fine normally, but they

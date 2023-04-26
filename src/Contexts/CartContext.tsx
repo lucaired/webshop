@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { Reducer, createContext, useEffect, useReducer } from "react";
 import { Product } from "./CategoryContext";
 
 export class CartItem {
@@ -57,6 +57,63 @@ const incrementQuantityForCartItem = (product: Product, items: CartItem[], delta
     })
 }
 
+export type CART_ACTION_TYPES = {
+    type: 'ADD_CART_ITEM' | 'REMOVE_CART_ITEM' | 'SET_CART_ITEM_QUANTITY' | 'INCREMENT_CART_ITEM_QUANTITY' | 'SET_IS_CART_HIDDEN' | 'SET_CART_TOTAL' | 'SET_CART_ITEMS_COUNT',
+    payload: number | Product | CartItem | boolean | { product: Product, quantity: number } | { product: Product, delta: number }
+}
+
+export type CartState = {
+    cartItems: CartItem[],
+    isCartHidden: boolean,
+    cartItemsCount: number,
+    cartTotal: number
+}
+
+const initialState: CartState = {
+    cartItems: [],
+    isCartHidden: true,
+    cartItemsCount: 0,
+    cartTotal: 0
+}
+
+export const cartReducer: Reducer<CartState, CART_ACTION_TYPES> = (state: CartState, action: CART_ACTION_TYPES) => {
+    switch (action.type) {
+        case 'ADD_CART_ITEM':
+            return {
+                ...state,
+                cartItems: addItemToItems(action.payload as Product, state.cartItems)
+            };
+        case 'REMOVE_CART_ITEM':
+            return {
+                ...state,
+                cartItems: removeItemFromItems(action.payload as Product, state.cartItems)
+            };
+        case 'SET_CART_ITEM_QUANTITY':
+            return {
+                ...state,
+                cartItems: setQuantityForCartItem((action.payload as CartItem).product, state.cartItems, (action.payload as CartItem).quantity)
+            };
+        case 'INCREMENT_CART_ITEM_QUANTITY':
+            return {
+                ...state,
+                cartItems: incrementQuantityForCartItem((action.payload as CartItem).product, state.cartItems, (action.payload as CartItem).quantity)
+            };
+        case 'SET_IS_CART_HIDDEN':
+            return {
+                ...state,
+                isCartHidden: action.payload as boolean
+            };
+        case 'SET_CART_ITEMS_COUNT':
+            return {
+                ...state,
+                cartItemsCount: action.payload as number
+            };
+        default:
+            console.error(`Unhandled type ${action.type} in userReducer`);
+            return state;
+    }
+}
+
 export const CartContext = createContext<{
     cartItems: CartItem[],
     addCartItem: (cartItem: Product) => void,
@@ -84,43 +141,51 @@ interface CartContextProviderProps {
 }
 
 export const CartContextProvider = (props: CartContextProviderProps) => {
+    
     const { children } = props;
 
-    const [isCartHidden, setIsCartHidden] = useState(true);
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
-    const [cartItemsCount, setCartItemsCount] = useState(0);
-    const [cartTotal, setCartTotal] = useState(0);
+    const [ {cartItems, isCartHidden, cartItemsCount, cartTotal }, dispatch ] = useReducer(cartReducer, initialState);
 
     useEffect(() => {
-        let count = 0;
-        cartItems.forEach(cartItem => count += cartItem.quantity);
-        setCartItemsCount(count);
+        const count = cartItems.reduce((total: number, cartItem: CartItem) => total += cartItem.quantity, 0);
+        dispatch({ type: 'SET_CART_ITEMS_COUNT', payload: count });
+        
         if (count === 0) {
-            setIsCartHidden(true);
+            dispatch({ type: 'SET_IS_CART_HIDDEN', payload: true });
         }
 
-        setCartTotal(
-            cartItems.reduce((total, cartItem) => total += cartItem.quantity * cartItem.product.price, 0)
-        );
+        dispatch({ type: 'SET_CART_TOTAL', payload: cartItems.reduce((total: number, cartItem: CartItem) => total += cartItem.quantity * cartItem.product.price, 0) });
 
     }, [cartItems])
 
-    const addCartItem = (cartItem: Product) => setCartItems(cartItems => addItemToItems(cartItem, cartItems));
-    const removeCartItem = (cartItem: Product) => setCartItems(cartItems => removeItemFromItems(cartItem, cartItems));
-    const setCartItemQuantity = (cartItem: Product, quantity: number) => setCartItems(cartItems => setQuantityForCartItem(cartItem, cartItems, quantity));
-    const incrementCartItemQuantity = (cartItem: Product, delta: number) => setCartItems(cartItems => incrementQuantityForCartItem(cartItem, cartItems, delta));
-    
-    const value = { 
-        cartItems,
-        addCartItem,
+    const addCartItem = (cartItem: Product) => {
+        dispatch({ type: 'ADD_CART_ITEM', payload: cartItem });
+    }
+
+    const removeCartItem = (cartItem: Product) => {
+        dispatch({ type: 'REMOVE_CART_ITEM', payload: cartItem });
+    }
+
+    const setCartItemQuantity = (cartItem: Product, quantity: number) => {
+        dispatch({ type: 'SET_CART_ITEM_QUANTITY', payload: { product: cartItem, quantity } });
+    }
+
+    const incrementCartItemQuantity = (cartItem: Product, delta: number) => {
+        dispatch({ type: 'INCREMENT_CART_ITEM_QUANTITY', payload: { product: cartItem, delta } });
+    }
+
+    const setIsCartHidden = (isCartHidden: boolean) => {
+        dispatch({ type: 'SET_IS_CART_HIDDEN', payload: isCartHidden });
+    }
+
+    const value = {
+        cartItems, isCartHidden, cartItemsCount, cartTotal,
+        addCartItem, 
         removeCartItem,
-        setIsCartHidden,
         setCartItemQuantity,
         incrementCartItemQuantity,
-        isCartHidden,
-        cartItemsCount,
-        cartTotal
-    };
+        setIsCartHidden
+    }
 
     return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
