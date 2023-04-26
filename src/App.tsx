@@ -7,7 +7,7 @@ import NavBar from './routes/NavBar/NavBar';
 import SignIn from './routes/SignIn/SignIn';
 import Shop from './components/Shop/Shop';
 import Checkout from './components/Checkout/Checkout';
-import { LocalUserContext } from './contexts/UserContext';
+import { LocalUserContext } from './contexts/LocalUserContext';
 import { CartContext } from './contexts/CartContext';
 
 function App() {

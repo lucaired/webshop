@@ -7,7 +7,7 @@ import { Fragment, useContext, useState } from "react";
  */
 
 import { Link, Outlet } from "react-router-dom"; // shows the child routes
-import { LocalUserContext } from "../../contexts/UserContext";
+import { LocalUserContext } from "../../contexts/LocalUserContext";
 import { signOutUser } from "../../utils/firebase";
 import CartIcon from "../../components/Cart/CartIcon";
 import CartDropDown from "../../components/Cart/CartDropDown";
