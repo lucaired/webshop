@@ -1,4 +1,4 @@
-import { Reducer, createContext, useEffect, useReducer } from "react";
+import React, { Reducer, createContext, useEffect, useReducer } from "react";
 import { Product } from "./CategoryContext";
 
 export class CartItem {
@@ -11,50 +11,53 @@ export class CartItem {
     }
 }
 
-const addItemToItems = (newProduct: Product, items: CartItem[]): CartItem[] => {
-    let index = -1;
-    
-    items.forEach((currentItem, currentIndex) => {
-        if (currentItem.product.id === newProduct.id) {
-            index = currentIndex
-        }
-    })
-
-    // make sure to always return a new array when doing state updates, otherwise stuff will not fire
-
-    if (index !== -1) {
-        return items.map((currentItem, currentIndex) => {
-            return (currentIndex === index) 
+function increaseItemQuanitity(items: CartItem[], index: number): CartItem[] {
+    return items.map((currentItem, currentIndex) => {
+        return (currentIndex === index)
             ? new CartItem(currentItem.product, currentItem.quantity + 1)
             : currentItem;
-        });
+    });
+}
+
+type updateCartItemsAction = 'ADD_CART_ITEM' | 'REMOVE_CART_ITEM' | 'SET_CART_ITEM_QUANTITY' | 'INCREMENT_CART_ITEM_QUANTITY' | 'CLEAR_CART';
+
+const updateCartItems = (target: Product, items: CartItem[], action: updateCartItemsAction, payload?: number): CartItem[] => {
+    if (action === 'CLEAR_CART') {
+        return [];
     } else {
-        return [...items, new CartItem(newProduct, 1)]
+        const index = items.findIndex((currentItem) => currentItem.product.id === target.id);
+        let newItems: CartItem[] = items;
+
+        if (index !== -1) {
+            if (action === 'ADD_CART_ITEM') {
+                newItems = increaseItemQuanitity(items, index)
+            } else if (action === 'REMOVE_CART_ITEM') {
+                newItems = [...items.filter((currentItem) => currentItem.product.id !== target.id)];
+
+            } else if (action === 'SET_CART_ITEM_QUANTITY') {
+                if (payload !== undefined && payload > 0) {
+                    newItems = items.map((currentItem, currentIndex) => {
+                            return (currentIndex === index) 
+                            ? new CartItem(currentItem.product, payload)
+                            : currentItem;
+                        });
+                }
+            } else if (action === 'INCREMENT_CART_ITEM_QUANTITY') {
+                if (payload !== undefined && payload > 0) {
+                    newItems = items.map((currentItem, currentIndex) => {
+                            return (currentIndex === index) 
+                            ? new CartItem(currentItem.product, currentItem.quantity + payload)
+                            : currentItem;
+                    });
+                } 
+            }
+        } else {
+            if (action === 'ADD_CART_ITEM') {
+                newItems = [...items, new CartItem(target, 1)];
+            }
+        }
+        return newItems;
     }
-}
-
-const removeItemFromItems = (productToRemove: Product, items: CartItem[]): CartItem[] => {
-    return [...items.filter((currentItem) => currentItem.product.id !== productToRemove.id)];
-}
-
-const setQuantityForCartItem = (product: Product, items: CartItem[], quantity: number): CartItem[] => {
-    return items.map((currentItem) => {
-        if (currentItem.product.id === product.id) {
-            return new CartItem(currentItem.product, quantity);
-        } else {
-            return currentItem;
-        }
-    })
-}
-
-const incrementQuantityForCartItem = (product: Product, items: CartItem[], delta: number): CartItem[] => {
-    return items.map((currentItem) => {
-        if (currentItem.product.id === product.id) {
-            return new CartItem(currentItem.product, currentItem.quantity + delta);
-        } else {
-            return currentItem;
-        }
-    })
 }
 
 export type CART_ACTION_TYPES = {
@@ -81,22 +84,22 @@ export const cartReducer: Reducer<CartState, CART_ACTION_TYPES> = (state: CartSt
         case 'ADD_CART_ITEM':
             return {
                 ...state,
-                cartItems: addItemToItems(action.payload as Product, state.cartItems)
+                cartItems: updateCartItems(action.payload as Product, state.cartItems, 'ADD_CART_ITEM')
             };
         case 'REMOVE_CART_ITEM':
             return {
                 ...state,
-                cartItems: removeItemFromItems(action.payload as Product, state.cartItems)
+                cartItems: updateCartItems(action.payload as Product, state.cartItems, 'REMOVE_CART_ITEM')
             };
         case 'SET_CART_ITEM_QUANTITY':
             return {
                 ...state,
-                cartItems: setQuantityForCartItem((action.payload as CartItem).product, state.cartItems, (action.payload as CartItem).quantity)
+                cartItems: updateCartItems((action.payload as CartItem).product, state.cartItems, 'SET_CART_ITEM_QUANTITY', (action.payload as CartItem).quantity)
             };
         case 'INCREMENT_CART_ITEM_QUANTITY':
             return {
                 ...state,
-                cartItems: incrementQuantityForCartItem((action.payload as CartItem).product, state.cartItems, (action.payload as CartItem).quantity)
+                cartItems: updateCartItems((action.payload as CartItem).product, state.cartItems, 'INCREMENT_CART_ITEM_QUANTITY', (action.payload as CartItem).quantity)
             };
         case 'SET_IS_CART_HIDDEN':
             return {
@@ -107,6 +110,11 @@ export const cartReducer: Reducer<CartState, CART_ACTION_TYPES> = (state: CartSt
             return {
                 ...state,
                 cartItemsCount: action.payload as number
+            };
+        case 'SET_CART_TOTAL':
+            return {
+                ...state,
+                cartTotal: action.payload as number
             };
         default:
             console.error(`Unhandled type ${action.type} in userReducer`);
@@ -146,7 +154,9 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
 
     const [ {cartItems, isCartHidden, cartItemsCount, cartTotal }, dispatch ] = useReducer(cartReducer, initialState);
 
+    /*
     useEffect(() => {
+        // TODO: bring this functionality into the reducer
         const count = cartItems.reduce((total: number, cartItem: CartItem) => total += cartItem.quantity, 0);
         dispatch({ type: 'SET_CART_ITEMS_COUNT', payload: count });
         
@@ -157,6 +167,7 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
         dispatch({ type: 'SET_CART_TOTAL', payload: cartItems.reduce((total: number, cartItem: CartItem) => total += cartItem.quantity * cartItem.product.price, 0) });
 
     }, [cartItems])
+    */
 
     const addCartItem = (cartItem: Product) => {
         dispatch({ type: 'ADD_CART_ITEM', payload: cartItem });

@@ -8,8 +8,7 @@ interface CheckoutCardProps {
 
 const CheckoutCard = (props: CheckoutCardProps) => {
     const { cartItem } = props;
-    const { removeCartItem, incrementCartItemQuantity, setIsCartHidden } = useContext(CartContext);
-    setIsCartHidden(true);
+    const { removeCartItem, incrementCartItemQuantity } = useContext(CartContext);
 
     const handler = (direction: string) => {
         if (direction === 'up') {
