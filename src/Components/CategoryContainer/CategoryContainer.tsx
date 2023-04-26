@@ -5,14 +5,14 @@
 import { useNavigate } from 'react-router-dom';
 import './CategoryContainer.scss';
 
-export interface Category {
+export interface CategoryInfo {
     id: number;
     title: string;
     imageUrl: string;
   }
 
 export interface CategoryContainerProps {
-    category: Category;
+    category: CategoryInfo;
 }
 
 const CategoryContainer = (props: CategoryContainerProps) => {

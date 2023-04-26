@@ -1,7 +1,7 @@
-import CategoryContainer, { Category } from "./CategoryContainer/CategoryContainer";
+import CategoryContainer, { CategoryInfo } from "./CategoryContainer/CategoryContainer";
 
 interface DirectoryProps {
-    categories: Category[];
+    categories: CategoryInfo[];
 }
 
 const Directory = (props: DirectoryProps) => {

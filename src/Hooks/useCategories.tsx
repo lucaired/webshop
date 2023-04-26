@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { getDocumentsFromCollection } from "../utils/firebase";
-import { Product } from "../contexts/CategoryContext";
+import { getDocumentsFromCollection } from "../Utils/firebase";
+import { Product } from "../Contexts/CategoryContext";
 
 export interface Category {
     title: string;

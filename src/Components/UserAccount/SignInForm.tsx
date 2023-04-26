@@ -1,6 +1,6 @@
 import {  useState } from "react";
 import { SignUpInput } from "./UserAccountInput";
-import { loginWithMail } from "../../utils/firebase";
+import { loginWithMail } from "../../Utils/firebase";
 import { useNavigate } from "react-router-dom";
 
 interface SignInFields {

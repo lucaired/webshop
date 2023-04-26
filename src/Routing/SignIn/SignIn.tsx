@@ -1,6 +1,6 @@
-import { signInWithGooglePopup } from "../../utils/firebase";
-import SignUpForm from "../../components/UserAccount/SignUpForm";
-import SignInForm from "../../components/UserAccount/SignInForm";
+import { signInWithGooglePopup } from "../../Utils/firebase";
+import SignUpForm from "../../Components/UserAccount/SignUpForm";
+import SignInForm from "../../Components/UserAccount/SignInForm";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {

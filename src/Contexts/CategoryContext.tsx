@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-import useCategories from "../hooks/useCategories";
+import useCategories from "../Hooks/useCategories";
 
 /**
  * - Define the Product class

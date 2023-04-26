@@ -7,11 +7,11 @@ import { Fragment, useContext, useState } from "react";
  */
 
 import { Link, Outlet } from "react-router-dom"; // shows the child routes
-import { LocalUserContext } from "../../contexts/LocalUserContext";
-import { signOutUser } from "../../utils/firebase";
-import CartIcon from "../../components/Cart/CartIcon";
-import CartDropDown from "../../components/Cart/CartDropDown";
-import { CartContext } from "../../contexts/CartContext";
+import { LocalUserContext } from "../../Contexts/LocalUserContext";
+import { signOutUser } from "../../Utils/firebase";
+import CartIcon from "../../Components/Cart/CartIcon";
+import CartDropDown from "../../Components/Cart/CartDropDown";
+import { CartContext } from "../../Contexts/CartContext";
 
 const NavBar = () => {
 

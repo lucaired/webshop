@@ -1,5 +1,5 @@
 import { Fragment, useContext } from "react";
-import { CartContext, CartItem } from "../../contexts/CartContext";
+import { CartContext, CartItem } from "../../Contexts/CartContext";
 import './checkout.scss';
 
 interface CheckoutCardProps {

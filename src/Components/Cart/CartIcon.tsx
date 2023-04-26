@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 // Use a SVG as a React Component !!!
 import { ReactComponent as ShoppingIcon } from './shopping-bag.svg';
-import { CartContext } from '../../contexts/CartContext';
+import { CartContext } from '../../Contexts/CartContext';
 
 interface CartIconProps {
     onClickHandler: () => void;

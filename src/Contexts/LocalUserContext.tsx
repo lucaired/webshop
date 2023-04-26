@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import { getUserDoc, onAuthStateChanged } from '../utils/firebase';
+import { getUserDoc, onAuthStateChanged } from '../Utils/firebase';
 
 export class LocalUser {
     name: string;

@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Directory from "../../components/Directory";
-import { Category } from "../../components/CategoryContainer/CategoryContainer";
+import Directory from "../../Components/Directory";
+import { CategoryInfo } from "../../Components/CategoryContainer/CategoryContainer";
 
 const Home = () => {
     const categoriesJSON = `[
@@ -31,7 +31,7 @@ const Home = () => {
         }
     ]`;
   
-    const categories: Category[] = JSON.parse(categoriesJSON);
+    const categories: CategoryInfo[] = JSON.parse(categoriesJSON);
 
     return (
             <div>

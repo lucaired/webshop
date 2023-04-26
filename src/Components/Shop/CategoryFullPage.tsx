@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
-import { CategoriesContext, Product } from "../../contexts/CategoryContext";
+import { CategoriesContext, Product } from "../../Contexts/CategoryContext";
 import ProductCard from "./ProductCard";
 
 const CategoryFullPage = () => {

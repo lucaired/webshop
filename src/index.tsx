@@ -4,9 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { LocalUserContextProvider } from './contexts/LocalUserContext';
-import { CategoriesContextProvider } from './contexts/CategoryContext';
-import { CartContextProvider } from './contexts/CartContext';
+import { LocalUserContextProvider } from './Contexts/LocalUserContext';
+import { CategoriesContextProvider } from './Contexts/CategoryContext';
+import { CartContextProvider } from './Contexts/CartContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

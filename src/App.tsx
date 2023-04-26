@@ -2,13 +2,13 @@ import { useContext } from 'react';
 
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import Home from './routes/Home/Home';
-import NavBar from './routes/NavBar/NavBar';
-import SignIn from './routes/SignIn/SignIn';
-import Shop from './components/Shop/Shop';
-import Checkout from './components/Checkout/Checkout';
-import { LocalUserContext } from './contexts/LocalUserContext';
-import { CartContext } from './contexts/CartContext';
+import SignIn from './Routing/SignIn/SignIn';
+import NavBar from './Routing/NavBar/NavBar';
+import Home from './Routing/Home/Home';
+import Shop from './Components/Shop/Shop';
+import Checkout from './Components/Checkout/Checkout';
+import { LocalUserContext } from './Contexts/LocalUserContext';
+import { CartContext } from './Contexts/CartContext';
 
 function App() {
   const { localUser } = useContext(LocalUserContext);
