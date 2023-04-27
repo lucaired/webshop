@@ -51,7 +51,7 @@ interface  CartItemCardProps {
 
 const CartItemCard = (props: CartItemCardProps) => {
 
-    const { product, quantity } = props.cartItem
+    const { product } = props.cartItem
     const { removeCartItem } = useContext(CartContext);
 
     return (
@@ -88,7 +88,7 @@ const CartItemCard = (props: CartItemCardProps) => {
                     <span>Price: {' '}
                         <span style={{
                             fontWeight: 'bold',
-                        }}>{product.price * quantity} €</span>
+                        }}>{product.price} €</span>
                     </span>
                 </div>
                 <CartItemQuantity 

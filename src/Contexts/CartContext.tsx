@@ -66,11 +66,13 @@ const updateCartItems = (target: Product | null, state: CartState, action: updat
 
     if (index !== -1) {
         if (action === 'ADD_CART_ITEM') {
+
             newItems = changeItemQuanitity(state.cartItems, index, 1);
             cartItemsCount = state.cartItemsCount + 1;
             cartTotal = state.cartTotal + target.price;
 
         } else if (action === 'REMOVE_CART_ITEM') {
+
             newItems = [...state.cartItems.filter((currentItem) => currentItem.product.id !== target.id)];
             cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
             cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
@@ -86,7 +88,7 @@ const updateCartItems = (target: Product | null, state: CartState, action: updat
                 } else {
                     // add the new information and remove the old information
                     cartItemsCount = state.cartItemsCount + payload - state.cartItems[index].quantity;
-                    cartTotal = (payload - state.cartItems[index].quantity) * target.price;
+                    cartTotal = state.cartTotal + (payload - state.cartItems[index].quantity) * target.price;
                 }
             }
         } else if (action === 'CHANGE_CART_ITEM_QUANTITY') {
@@ -97,11 +99,11 @@ const updateCartItems = (target: Product | null, state: CartState, action: updat
                 if (payload + state.cartItems[index].quantity <= 0) {
                     // remove the old item information
                     cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
-                    cartTotal = -1 * state.cartItems[index].quantity * target.price;
+                    cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
                 } else {
                     // just apply the delta
                     cartItemsCount = state.cartItemsCount + payload;
-                    cartTotal = state.cartItemsCount + payload * target.price;
+                    cartTotal = state.cartTotal + payload * target.price;
                 }
             } 
         }
@@ -109,7 +111,7 @@ const updateCartItems = (target: Product | null, state: CartState, action: updat
         if (action === 'ADD_CART_ITEM') {
             newItems = [...state.cartItems, new CartItem(target, 1)];
             cartItemsCount = state.cartItemsCount + 1;
-            cartTotal = state.cartItemsCount + target.price;
+            cartTotal = state.cartTotal + target.price;
         }
     }
 
