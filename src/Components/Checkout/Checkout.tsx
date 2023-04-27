@@ -8,17 +8,17 @@ interface CheckoutCardProps {
 
 const CheckoutCard = (props: CheckoutCardProps) => {
     const { cartItem } = props;
-    const { removeCartItem, incrementCartItemQuantity } = useContext(CartContext);
+    const { removeCartItem, changeCartItemQuantity } = useContext(CartContext);
 
     const handler = (direction: string) => {
         if (direction === 'up') {
-            incrementCartItemQuantity(props.cartItem.product, 1)
+            changeCartItemQuantity(props.cartItem.product, 1)
         } else if (direction === 'down') {
             const decrementedQuantity = cartItem.quantity - 1;
             if (decrementedQuantity === 0) {
                 removeCartItem(props.cartItem.product)
             } else {
-                incrementCartItemQuantity(props.cartItem.product, -1)
+                changeCartItemQuantity(props.cartItem.product, -1)
             }
         }
     }
@@ -91,7 +91,7 @@ const Checkout = () => {
                 }}
                 className="checkout-title-bar"
             >
-                {titles.map((title)=><span>{title}</span>)}
+                {titles.map((title, index)=><span key={title+index}>{title}</span>)}
             </div>
             <div
                 style={{
@@ -99,7 +99,7 @@ const Checkout = () => {
                     flexDirection: 'column',
                 }}
             >
-                {cartItems.map((cartItem) => <CheckoutCard cartItem={cartItem} />)}
+                {cartItems.map((cartItem, index) => <CheckoutCard key={cartItem.product.name + index} cartItem={cartItem} />)}
             </div>
             <div>
                 <h1>

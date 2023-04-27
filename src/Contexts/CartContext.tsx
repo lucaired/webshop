@@ -49,14 +49,12 @@ const updateCartItems = (target: Product | null, state: CartState, action: updat
 } => {
     
     if (action === 'CLEAR_CART') {
-
         return {
             cartItems: [],
             isCartHidden: true,
             cartItemsCount: 0,
             cartTotal: 0
         };
-
     }
 
     if (target === null || target === undefined) return state;
@@ -67,7 +65,6 @@ const updateCartItems = (target: Product | null, state: CartState, action: updat
     let cartTotal = 0;
 
     if (index !== -1) {
-        
         if (action === 'ADD_CART_ITEM') {
             newItems = changeItemQuanitity(state.cartItems, index, 1);
             cartItemsCount = state.cartItemsCount + 1;
@@ -115,10 +112,10 @@ const updateCartItems = (target: Product | null, state: CartState, action: updat
             cartTotal = state.cartItemsCount + target.price;
         }
     }
-    
+
     return {
         cartItems: newItems,
-        isCartHidden: state.isCartHidden,
+        isCartHidden: state.isCartHidden || cartItemsCount === 0,
         cartItemsCount: cartItemsCount,
         cartTotal: cartTotal
     };
@@ -150,9 +147,19 @@ export const cartReducer: Reducer<CartState, CART_ACTION_TYPES> = (state: CartSt
         case 'REMOVE_CART_ITEM':
             return updateCartItems(action.payload as Product, state, 'REMOVE_CART_ITEM');
         case 'SET_CART_ITEM_QUANTITY':
-            return updateCartItems((action.payload as CartItem).product, state, 'SET_CART_ITEM_QUANTITY', (action.payload as CartItem).quantity);
+            return updateCartItems(
+                (action.payload as { product: Product, quantity: number }).product,
+                state,
+                'SET_CART_ITEM_QUANTITY',
+                (action.payload as { product: Product, quantity: number }).quantity
+            );
         case 'CHANGE_CART_ITEM_QUANTITY':
-            return updateCartItems((action.payload as CartItem).product, state, 'CHANGE_CART_ITEM_QUANTITY', (action.payload as CartItem).quantity);
+            return updateCartItems(
+                (action.payload as { product: Product, delta: number }).product,
+                state,
+                'CHANGE_CART_ITEM_QUANTITY',
+                (action.payload as { product: Product, delta: number }).delta
+            );
         case 'SET_IS_CART_HIDDEN':
             return {
                 ...state,
@@ -171,7 +178,7 @@ export const CartContext = createContext<{
     addCartItem: (cartItem: Product) => void,
     removeCartItem: (cartItem: Product) => void,
     setCartItemQuantity: (cartItem: Product, quantity: number) => void,
-    incrementCartItemQuantity: (cartItem: Product, delta: number) => void,
+    changeCartItemQuantity: (cartItem: Product, delta: number) => void,
     isCartHidden: boolean,
     setIsCartHidden: (isCartHidden: boolean) => void,
     cartItemsCount: number
@@ -182,7 +189,7 @@ export const CartContext = createContext<{
     removeCartItem: (cartItem: Product) => {},
     setIsCartHidden: (isCartHidden: boolean) => {},
     setCartItemQuantity: (cartItem: Product, quantity: number) => {},
-    incrementCartItemQuantity: (cartItem: Product, delta: number) => {},
+    changeCartItemQuantity: (cartItem: Product, delta: number) => {},
     isCartHidden: true,
     cartItemsCount: 0,
     cartTotal: 0,
@@ -210,7 +217,7 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
         dispatch({ type: 'SET_CART_ITEM_QUANTITY', payload: { product: cartItem, quantity } });
     }
 
-    const incrementCartItemQuantity = (cartItem: Product, delta: number) => {
+    const changeCartItemQuantity = (cartItem: Product, delta: number) => {
         dispatch({ type: 'CHANGE_CART_ITEM_QUANTITY', payload: { product: cartItem, delta } });
     }
 
@@ -223,7 +230,7 @@ export const CartContextProvider = (props: CartContextProviderProps) => {
         addCartItem, 
         removeCartItem,
         setCartItemQuantity,
-        incrementCartItemQuantity,
+        changeCartItemQuantity,
         setIsCartHidden
     }
 

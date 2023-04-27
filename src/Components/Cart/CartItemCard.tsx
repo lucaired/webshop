@@ -3,13 +3,13 @@ import { CartContext, CartItem } from "../../Contexts/CartContext";
 
 const CartItemQuantity = (props: CartItemCardProps) => {
 
-    const { removeCartItem, setCartItemQuantity, incrementCartItemQuantity } = useContext(CartContext);
+    const { removeCartItem, setCartItemQuantity, changeCartItemQuantity } = useContext(CartContext);
 
     const handler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         if (parseInt(e.target.value) === 0) {
             removeCartItem(props.cartItem.product)
         } else if (parseInt(e.target.value) === 10) {
-            incrementCartItemQuantity(props.cartItem.product, 10)
+            changeCartItemQuantity(props.cartItem.product, 10)
         } else {
             setCartItemQuantity(props.cartItem.product, parseInt(e.target.value))
         }
