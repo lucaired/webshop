@@ -11,6 +11,25 @@ export class CartItem {
     }
 }
 
+export type CART_ACTION_TYPES = {
+    type: 'ADD_CART_ITEM' | 'REMOVE_CART_ITEM' | 'SET_CART_ITEM_QUANTITY' | 'CHANGE_CART_ITEM_QUANTITY' | 'SET_IS_CART_HIDDEN' | 'CLEAR_CART',
+    payload: number | Product | CartItem | boolean | { product: Product, quantity: number } | { product: Product, delta: number }
+}
+
+export type CartState = {
+    cartItems: CartItem[],
+    isCartHidden: boolean,
+    cartItemsCount: number,
+    cartTotal: number
+}
+
+const initialState: CartState = {
+    cartItems: [],
+    isCartHidden: true,
+    cartItemsCount: 0,
+    cartTotal: 0
+}
+
 function changeItemQuanitity(items: CartItem[], index: number, delta: number): CartItem[] {
     /**
      * If new quantity is negative, remove the item if the quantity is 1 or more than apply the delta
@@ -39,127 +58,145 @@ function setItemQuanitity(items: CartItem[], index: number, quantity: number): C
     });
 }
 
-type updateCartItemsAction = 'ADD_CART_ITEM' | 'REMOVE_CART_ITEM' | 'SET_CART_ITEM_QUANTITY' | 'CHANGE_CART_ITEM_QUANTITY' | 'CLEAR_CART';
-
-const updateCartItems = (target: Product | null, state: CartState, action: updateCartItemsAction, payload?: number): {
-    cartItems: CartItem[],
-    isCartHidden: boolean,
-    cartItemsCount: number,
-    cartTotal: number
-} => {
-    
-    if (action === 'CLEAR_CART') {
-        return {
-            cartItems: [],
-            isCartHidden: true,
-            cartItemsCount: 0,
-            cartTotal: 0
-        };
-    }
-
+const addCartItem = (target: Product, state: CartState): CartState => {
     if (target === null || target === undefined) return state;
 
     const index = state.cartItems.findIndex((currentItem) => currentItem.product.id === target.id);
     let newItems: CartItem[] = state.cartItems;
-    let cartItemsCount = 0;
-    let cartTotal = 0;
-
+    
     if (index !== -1) {
-        if (action === 'ADD_CART_ITEM') {
-
-            newItems = changeItemQuanitity(state.cartItems, index, 1);
-            cartItemsCount = state.cartItemsCount + 1;
-            cartTotal = state.cartTotal + target.price;
-
-        } else if (action === 'REMOVE_CART_ITEM') {
-
-            newItems = [...state.cartItems.filter((currentItem) => currentItem.product.id !== target.id)];
-            cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
-            cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
-
-        } else if (action === 'SET_CART_ITEM_QUANTITY') {
-            if (payload !== undefined) {
-                newItems = setItemQuanitity(state.cartItems, index, payload);
-
-                if (payload <= 0) {
-                    // remove the old item information
-                    cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
-                    cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
-                } else {
-                    // add the new information and remove the old information
-                    cartItemsCount = state.cartItemsCount + payload - state.cartItems[index].quantity;
-                    cartTotal = state.cartTotal + (payload - state.cartItems[index].quantity) * target.price;
-                }
-            }
-        } else if (action === 'CHANGE_CART_ITEM_QUANTITY') {
-            if (payload !== undefined) {
-
-                newItems = changeItemQuanitity(state.cartItems, index, payload);
-                
-                if (payload + state.cartItems[index].quantity <= 0) {
-                    // remove the old item information
-                    cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
-                    cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
-                } else {
-                    // just apply the delta
-                    cartItemsCount = state.cartItemsCount + payload;
-                    cartTotal = state.cartTotal + payload * target.price;
-                }
-            } 
-        }
+        newItems = changeItemQuanitity(state.cartItems, index, 1);
     } else {
-        if (action === 'ADD_CART_ITEM') {
-            newItems = [...state.cartItems, new CartItem(target, 1)];
-            cartItemsCount = state.cartItemsCount + 1;
-            cartTotal = state.cartTotal + target.price;
-        }
+        newItems = [...state.cartItems, new CartItem(target, 1)];
     }
-
+    
+    const cartItemsCount = state.cartItemsCount + 1;
+    const cartTotal = state.cartTotal + target.price;
+    
     return {
         cartItems: newItems,
-        isCartHidden: state.isCartHidden || cartItemsCount === 0,
-        cartItemsCount: cartItemsCount,
-        cartTotal: cartTotal
+        isCartHidden: false,
+        cartItemsCount,
+        cartTotal
     };
 }
 
-export type CART_ACTION_TYPES = {
-    type: 'ADD_CART_ITEM' | 'REMOVE_CART_ITEM' | 'SET_CART_ITEM_QUANTITY' | 'CHANGE_CART_ITEM_QUANTITY' | 'SET_IS_CART_HIDDEN' | 'CLEAR_CART',
-    payload: number | Product | CartItem | boolean | { product: Product, quantity: number } | { product: Product, delta: number }
+const clearCart = (): CartState => {
+    return {
+        cartItems: [],
+        isCartHidden: true,
+        cartItemsCount: 0,
+        cartTotal: 0
+    };
 }
 
-export type CartState = {
-    cartItems: CartItem[],
-    isCartHidden: boolean,
-    cartItemsCount: number,
-    cartTotal: number
+const removeCartItem = (target: Product, state: CartState): CartState => {
+    if (target === null || target === undefined) return state;
+
+    const index = state.cartItems.findIndex((currentItem) => currentItem.product.id === target.id);
+
+    if (index !== -1) {
+        const newItems = [...state.cartItems.filter((currentItem) => currentItem.product.id !== target.id)];
+        const cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
+        const cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
+        return {
+            cartItems: newItems,
+            isCartHidden: false,
+            cartItemsCount,
+            cartTotal
+        }
+    } else {
+        return state;
+    }
 }
 
-const initialState: CartState = {
-    cartItems: [],
-    isCartHidden: true,
-    cartItemsCount: 0,
-    cartTotal: 0
+const setCartItemQuantity = (target: Product, state: CartState, payload: number): CartState => {
+    if (target === null || target === undefined) return state;
+
+    const index = state.cartItems.findIndex((currentItem) => currentItem.product.id === target.id);
+
+    if (index !== -1) {
+        if (payload !== undefined) {
+            const newItems = setItemQuanitity(state.cartItems, index, payload);
+            let cartItemsCount = 0;
+            let cartTotal = 0;
+
+            if (payload <= 0) {
+                // remove the old item information
+                cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
+                cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
+            } else {
+                // add the new information and remove the old information
+                cartItemsCount = state.cartItemsCount + payload - state.cartItems[index].quantity;
+                cartTotal = state.cartTotal + (payload - state.cartItems[index].quantity) * target.price;
+            }
+
+            return {
+                cartItems: newItems,
+                isCartHidden: false,
+                cartItemsCount,
+                cartTotal
+            }
+        } else {
+            return state;
+        }
+    } else {
+        return state;
+    }
+}
+
+const changeCartItemQuantity = (target: Product, state: CartState, payload: number): CartState => {
+    if (target === null || target === undefined) return state;
+    
+    const index = state.cartItems.findIndex((currentItem) => currentItem.product.id === target.id);
+
+    if (index !== -1) {
+        if (payload !== undefined) {
+
+            const newItems = changeItemQuanitity(state.cartItems, index, payload);
+            let cartItemsCount = 0;
+            let cartTotal = 0;
+
+            if (payload + state.cartItems[index].quantity <= 0) {
+                // remove the old item information
+                cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
+                cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
+            } else {
+                // just apply the delta
+                cartItemsCount = state.cartItemsCount + payload;
+                cartTotal = state.cartTotal + payload * target.price;
+            }
+
+            return {
+                cartItems: newItems,
+                isCartHidden: false,
+                cartItemsCount,
+                cartTotal
+            }
+        } else {
+            return state;
+        }
+    } else {
+        return state;
+    }
 }
 
 export const cartReducer: Reducer<CartState, CART_ACTION_TYPES> = (state: CartState, action: CART_ACTION_TYPES) => {
     switch (action.type) {
         case 'ADD_CART_ITEM':
-            return updateCartItems(action.payload as Product, state, 'ADD_CART_ITEM');
+            return addCartItem(action.payload as Product, state);
         case 'REMOVE_CART_ITEM':
-            return updateCartItems(action.payload as Product, state, 'REMOVE_CART_ITEM');
+            return removeCartItem(action.payload as Product, state);
         case 'SET_CART_ITEM_QUANTITY':
-            return updateCartItems(
+            return setCartItemQuantity(
                 (action.payload as { product: Product, quantity: number }).product,
                 state,
-                'SET_CART_ITEM_QUANTITY',
                 (action.payload as { product: Product, quantity: number }).quantity
             );
         case 'CHANGE_CART_ITEM_QUANTITY':
-            return updateCartItems(
+            return changeCartItemQuantity(
                 (action.payload as { product: Product, delta: number }).product,
                 state,
-                'CHANGE_CART_ITEM_QUANTITY',
                 (action.payload as { product: Product, delta: number }).delta
             );
         case 'SET_IS_CART_HIDDEN':
@@ -168,7 +205,7 @@ export const cartReducer: Reducer<CartState, CART_ACTION_TYPES> = (state: CartSt
                 isCartHidden: action.payload as boolean
             };
         case 'CLEAR_CART':
-            return updateCartItems(null, state, 'CLEAR_CART');
+            return clearCart();
         default:
             console.error(`Unhandled type ${action.type} in userReducer`);
             return state;
