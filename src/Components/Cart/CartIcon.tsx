@@ -9,6 +9,7 @@ interface CartIconProps {
 }
 
 const CartIcon = (props: CartIconProps) => {
+
     const { onClickHandler } = props;
 
     const { cartItemsCount } = useContext(CartContext);

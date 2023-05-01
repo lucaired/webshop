@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import { CartContext, CartItem } from "../../Contexts/CartContext";
 import './checkout.scss';
 
@@ -77,8 +77,13 @@ const CheckoutCard = (props: CheckoutCardProps) => {
 
 
 const Checkout = () => {
-    const { cartItems, cartTotal } = useContext(CartContext);
-    
+    const { cartItems, cartTotal, setIsCartHidden } = useContext(CartContext);
+
+    useEffect(() => {
+        setIsCartHidden(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     const titles = ["Product", "Description", "Quantity", "Price", "Remove"]
 
     return (
