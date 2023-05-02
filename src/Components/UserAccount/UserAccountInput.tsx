@@ -18,6 +18,7 @@ export const SignUpInput = (props: SignUpInputProps) => {
                 name={name}
                 required
                 onChange={handler}
+                id={name}
                 value={value}
             />
         </Fragment>

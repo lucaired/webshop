@@ -37,7 +37,7 @@ export const db = getFirestore(firebase);
 export const createAuthUserWithEmailAndPassword = async (email: string, password: string) => {
     try {
         const { user } = await createUserWithEmailAndPassword(auth, email, password);
-        return user;
+        return new Promise((resolve) => resolve(user));
     } catch (error) {
         console.log(error);
     }

@@ -40,15 +40,13 @@ function App() {
 
   const { cartItemsCount} = useContext(CartContext);
 
-  const localUser: LocalUser = useSelector((state: any) => state.user.currentUser);
-
   return (
     <Routes>
       <Route path='/' element={<NavBar />}>
         <Route index element={<Home />} />
         <Route path='home' element={<Home />} />
         <Route path='shop/*' element={<Shop />} />
-        <Route path='sign-in' element={localUser === null ? <SignIn /> : <Home />} />
+        <Route path='sign-in' element={<SignIn />} />
         <Route path='checkout' element={cartItemsCount > 0 ? <Checkout /> : <Home />} />
       </Route>
     </Routes>

@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { createAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase";
 import { SignUpInput } from "./UserAccountInput";
+import { useNavigate } from "react-router-dom";
 
 interface SignUpFields {
     name: string;
@@ -10,6 +11,8 @@ interface SignUpFields {
 }
 
 const SignUpForm = () => {
+
+    const navigate = useNavigate();
 
     const [form, setForm] = useState<SignUpFields>({
         name: "",
@@ -35,6 +38,7 @@ const SignUpForm = () => {
         } else {
             try {
                 await createAuthUserWithEmailAndPassword(form.email, form.password);
+                navigate("/shop");
             } catch (error) {
                 console.error(error);
             }
