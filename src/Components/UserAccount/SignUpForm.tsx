@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { createAuthUserWithEmailAndPassword } from "../../Utils/firebase";
+import { createAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase";
 import { SignUpInput } from "./UserAccountInput";
 
 interface SignUpFields {

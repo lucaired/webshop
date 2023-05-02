@@ -16,7 +16,6 @@ export const SignUpInput = (props: SignUpInputProps) => {
             <input 
                 type={type}
                 name={name}
-                id={name}
                 required
                 onChange={handler}
                 value={value}

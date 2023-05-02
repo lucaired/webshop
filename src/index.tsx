@@ -3,27 +3,28 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
+import { Provider } from 'react-redux';
 
 import App from './App';
 import './index.css';
-import { LocalUserContextProvider } from './Contexts/LocalUserContext';
 import { CategoriesContextProvider } from './Contexts/CategoryContext';
 import { CartContextProvider } from './Contexts/CartContext';
+import { store } from './Store/store';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <LocalUserContextProvider>
-        <CategoriesContextProvider>
-          <CartContextProvider>
-            <App />
-          </CartContextProvider>
-        </CategoriesContextProvider>
-      </LocalUserContextProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+          <CategoriesContextProvider>
+            <CartContextProvider>
+              <App />
+            </CartContextProvider>
+          </CategoriesContextProvider>
+      </BrowserRouter>
+    </Provider>
     <Analytics />
     
   </React.StrictMode>

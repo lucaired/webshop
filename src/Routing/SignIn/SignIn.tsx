@@ -1,4 +1,4 @@
-import { signInWithGooglePopup } from "../../Utils/firebase";
+import { signInWithGooglePopup } from "../../Utils/Firebase/firebase";
 import SignUpForm from "../../Components/UserAccount/SignUpForm";
 import SignInForm from "../../Components/UserAccount/SignInForm";
 import { useNavigate } from "react-router-dom";

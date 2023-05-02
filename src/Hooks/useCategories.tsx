@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getDocumentsFromCollection } from "../Utils/firebase";
+import { getDocumentsFromCollection } from "../Utils/Firebase/firebase";
 import { Product } from "../Contexts/CategoryContext";
 
 export interface Category {

@@ -1,4 +1,6 @@
 import { Fragment, useContext } from "react"; 
+import { useDispatch, useSelector } from 'react-redux';
+
 /**
  * Renders nothing, but can have children. This allows us to render the NavBar
  * without having to use a surrounding div. Divs are fine normally, but they
@@ -7,19 +9,21 @@ import { Fragment, useContext } from "react";
  */
 
 import { Link, Outlet } from "react-router-dom"; // shows the child routes
-import { LocalUserContext } from "../../Contexts/LocalUserContext";
-import { signOutUser } from "../../Utils/firebase";
+import { signOutUser } from "../../Utils/Firebase/firebase";
 import CartIcon from "../../Components/Cart/CartIcon";
 import CartDropDown from "../../Components/Cart/CartDropDown";
 import { CartContext } from "../../Contexts/CartContext";
+import { LocalUser, setCurrentUser } from "../../Store/user";
 
 const NavBar = () => {
 
-    const { localUser, setLocalUser } = useContext(LocalUserContext);
-    
+    const dispatch = useDispatch();
+
+    const localUser: LocalUser = useSelector((state: any) => state.user.currentUser);
+
     const signOutHandler = async () => {
          await signOutUser();
-         setLocalUser(null);
+         dispatch(setCurrentUser(null));
     }
 
     const {isCartHidden, setIsCartHidden, cartItemsCount} = useContext(CartContext);
