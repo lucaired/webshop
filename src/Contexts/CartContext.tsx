@@ -101,7 +101,7 @@ const removeCartItem = (target: Product, state: CartState): CartState => {
         const cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
         return {
             cartItems: newItems,
-            isCartHidden: false,
+            isCartHidden: false || newItems.length === 0,
             cartItemsCount,
             cartTotal
         }
@@ -115,30 +115,26 @@ const setCartItemQuantity = (target: Product, state: CartState, payload: number)
 
     const index = state.cartItems.findIndex((currentItem) => currentItem.product.id === target.id);
 
-    if (index !== -1) {
-        if (payload !== undefined) {
-            const newItems = setItemQuanitity(state.cartItems, index, payload);
-            let cartItemsCount = 0;
-            let cartTotal = 0;
+    if (index !== -1 || payload !== undefined) {
+        const newItems = setItemQuanitity(state.cartItems, index, payload);
+        let cartItemsCount = 0;
+        let cartTotal = 0;
 
-            if (payload <= 0) {
-                // remove the old item information
-                cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
-                cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
-            } else {
-                // add the new information and remove the old information
-                cartItemsCount = state.cartItemsCount + payload - state.cartItems[index].quantity;
-                cartTotal = state.cartTotal + (payload - state.cartItems[index].quantity) * target.price;
-            }
-
-            return {
-                cartItems: newItems,
-                isCartHidden: false,
-                cartItemsCount,
-                cartTotal
-            }
+        if (payload <= 0) {
+            // remove the old item information
+            cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
+            cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
         } else {
-            return state;
+            // add the new information and remove the old information
+            cartItemsCount = state.cartItemsCount + payload - state.cartItems[index].quantity;
+            cartTotal = state.cartTotal + (payload - state.cartItems[index].quantity) * target.price;
+        }
+
+        return {
+            cartItems: newItems,
+            isCartHidden: false,
+            cartItemsCount,
+            cartTotal
         }
     } else {
         return state;
@@ -150,31 +146,27 @@ const changeCartItemQuantity = (target: Product, state: CartState, payload: numb
     
     const index = state.cartItems.findIndex((currentItem) => currentItem.product.id === target.id);
 
-    if (index !== -1) {
-        if (payload !== undefined) {
+    if (index !== -1 || payload !== undefined) {
 
-            const newItems = changeItemQuanitity(state.cartItems, index, payload);
-            let cartItemsCount = 0;
-            let cartTotal = 0;
+        const newItems = changeItemQuanitity(state.cartItems, index, payload);
+        let cartItemsCount = 0;
+        let cartTotal = 0;
 
-            if (payload + state.cartItems[index].quantity <= 0) {
-                // remove the old item information
-                cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
-                cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
-            } else {
-                // just apply the delta
-                cartItemsCount = state.cartItemsCount + payload;
-                cartTotal = state.cartTotal + payload * target.price;
-            }
-
-            return {
-                cartItems: newItems,
-                isCartHidden: false,
-                cartItemsCount,
-                cartTotal
-            }
+        if (payload + state.cartItems[index].quantity <= 0) {
+            // remove the old item information
+            cartItemsCount = state.cartItemsCount -1 * state.cartItems[index].quantity;
+            cartTotal = state.cartTotal -1 * state.cartItems[index].quantity * target.price;
         } else {
-            return state;
+            // just apply the delta
+            cartItemsCount = state.cartItemsCount + payload;
+            cartTotal = state.cartTotal + payload * target.price;
+        }
+
+        return {
+            cartItems: newItems,
+            isCartHidden: false,
+            cartItemsCount,
+            cartTotal
         }
     } else {
         return state;

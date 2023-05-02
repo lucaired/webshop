@@ -4,15 +4,14 @@ import CartItemCard from "./CartItemCard";
 import { useNavigate } from "react-router-dom";
 
 const CartDropDown = () => {
-    const { cartItems } = useContext(CartContext)
+    const { cartItems, cartTotal } = useContext(CartContext)
     const navigate = useNavigate();
-
 
     return (
         <div
             style={{
                 width: '240px',
-                height: '340px',
+                height: '380px',
                 position: 'absolute',
                 display: 'flex',
                 flexDirection: 'column',
@@ -37,6 +36,7 @@ const CartDropDown = () => {
                     />
                 )}
             </div>
+            <h3>Total: {cartTotal} €</h3>
             <button
                 style={{
                     marginTop: 'auto',
