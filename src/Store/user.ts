@@ -1,6 +1,7 @@
 import { createAction } from "../Utils/Reducer/reducer";
 import { RootState } from "./rootReducer";
 
+
 export class LocalUser {
     name: string;
     email: string;

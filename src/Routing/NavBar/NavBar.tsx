@@ -13,13 +13,13 @@ import { signOutUser } from "../../Utils/Firebase/firebase";
 import CartIcon from "../../Components/Cart/CartIcon";
 import CartDropDown from "../../Components/Cart/CartDropDown";
 import { CartContext } from "../../Contexts/CartContext";
-import { LocalUser, setCurrentUser } from "../../Store/user";
+import { LocalUser, selectCurrentUser, setCurrentUser } from "../../Store/user";
 
 const NavBar = () => {
 
     const dispatch = useDispatch();
 
-    const localUser: LocalUser = useSelector((state: any) => state.user.currentUser);
+    const localUser: LocalUser = useSelector(selectCurrentUser);
 
     const signOutHandler = async () => {
          await signOutUser();
@@ -70,7 +70,7 @@ const NavBar = () => {
                                 cursor: 'pointer',
                             }}
                         >
-                            SIGN OUT
+                            <span style={{textDecoration: 'none'}}>{localUser.name}{' '}|{' '}</span>SIGN OUT
                         </p>
                     : <Link 
                             to='/sign-in'
