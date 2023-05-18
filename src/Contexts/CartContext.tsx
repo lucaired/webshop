@@ -30,13 +30,13 @@ const initialState: CartState = {
     cartTotal: 0
 }
 
-function changeItemQuanitity(items: CartItem[], index: number, delta: number): CartItem[] {
+export function changeItemQuanitity(items: CartItem[], index: number, delta: number): CartItem[] {
     /**
      * If new quantity is negative, remove the item if the quantity is 1 or more than apply the delta
      */
     
     const currentItem = items[index];
-    if (currentItem.quantity + delta <= 0) return items.filter((currentItem, currentIndex) => currentIndex !== index);
+    if (currentItem.quantity + delta <= 0) return items.filter((_, currentIndex) => currentIndex !== index);
 
     return items.map((currentItem, currentIndex) => {
         return (currentIndex === index)
@@ -45,7 +45,7 @@ function changeItemQuanitity(items: CartItem[], index: number, delta: number): C
     });
 }
 
-function setItemQuanitity(items: CartItem[], index: number, quantity: number): CartItem[] {
+export function setItemQuanitity(items: CartItem[], index: number, quantity: number): CartItem[] {
     /**
      * If new quantity is negative, remove the item if the quantity is 1 or more than set the quantity
      */
