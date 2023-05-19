@@ -58,7 +58,7 @@ export function setItemQuanitity(items: CartItem[], index: number, quantity: num
     });
 }
 
-const addCartItem = (target: Product, state: CartState): CartState => {
+export const addCartItem = (target: Product, state: CartState): CartState => {
     if (target === null || target === undefined) return state;
 
     const index = state.cartItems.findIndex((currentItem) => currentItem.product.id === target.id);
@@ -90,7 +90,7 @@ const clearCart = (): CartState => {
     };
 }
 
-const removeCartItem = (target: Product, state: CartState): CartState => {
+export const removeCartItem = (target: Product, state: CartState): CartState => {
     if (target === null || target === undefined) return state;
 
     const index = state.cartItems.findIndex((currentItem) => currentItem.product.id === target.id);
