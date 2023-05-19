@@ -1,4 +1,4 @@
-import { addCartItem, changeItemQuanitity, setItemQuanitity, removeCartItem } from './CartContext';
+import { addCartItem, changeItemQuanitity, setItemQuanitity, removeCartItem } from '../CartContext';
 
 describe('changeItemQuantity', () => {
     test('should remove item if quantity is reduced to 0', () => {

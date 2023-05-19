@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { createAuthUserWithEmailAndPassword } from "../../Utils/Firebase/firebase";
-import { SignUpInput } from "./UserAccountInput";
+import  UserAccountInput  from "./UserAccountInput";
 import { useNavigate } from "react-router-dom";
 
 interface SignUpFields {
@@ -65,28 +65,28 @@ const SignUpForm = () => {
                     alignContent: "flex-start"
                 }}
             >
-                <SignUpInput
+                <UserAccountInput
                     type="text"
                     name="name"
                     label="Name"
                     handler={handleChange}
                     value={form.name}
                 />
-                <SignUpInput
+                <UserAccountInput
                     type="email"
                     name="email"
                     label="Email"
                     handler={handleChange}
                     value={form.email}
                 />
-                <SignUpInput
+                <UserAccountInput
                     type="password"
                     name="password"
                     label="Password"
                     handler={handleChange}
                     value={form.password}
                 />
-                <SignUpInput
+                <UserAccountInput
                     type="password"
                     label="Confirm Password"
                     name="confirmPassword"

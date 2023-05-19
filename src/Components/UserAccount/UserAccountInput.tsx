@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 
-export interface SignUpInputProps {
+export interface UserAccountInputProps {
     type: string;
     name: string;
     label: string;
@@ -8,7 +8,7 @@ export interface SignUpInputProps {
     value: string;
 }
 
-export const SignUpInput = (props: SignUpInputProps) => {
+const UserAccountInput = (props: UserAccountInputProps) => {
     const { type, name, label, handler, value } = props;
     return (
         <Fragment>
@@ -24,3 +24,5 @@ export const SignUpInput = (props: SignUpInputProps) => {
         </Fragment>
     )
 }
+
+export default UserAccountInput;

@@ -1,5 +1,5 @@
 import {  useState } from "react";
-import { SignUpInput } from "./UserAccountInput";
+import  UserAccountInput  from "./UserAccountInput";
 import { loginWithMail } from "../../Utils/Firebase/firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -61,14 +61,14 @@ const SignInForm = () => {
                     rowGap: "0.5rem",
                 }}
             >
-                <SignUpInput
+                <UserAccountInput
                     type="email"
                     name="email"
                     label="Email"
                     handler={handleChange}
                     value={form.email}
                 />
-                <SignUpInput
+                <UserAccountInput
                     type="password"
                     name="password"
                     label="Password"
