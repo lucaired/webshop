@@ -1,18 +1,23 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import UserAccountInput from '../UserAccountInput';
 
 describe('UserAccountInput', () => {
-    test('renders UserAccountInput component', () => {
-        render(<UserAccountInput 
-            label="Username"
-            type="text"
-            name="username"
-            placeholder="Enter your username"
-            value="test"
-            onChange={() => {}}
-        ></UserAccountInput>);
-        // This is an array of all elements that match the query
-        const inputElement = screen.getAllByLabelText(/username/i)[0];
-        expect(inputElement).toBeInTheDocument();
+    const mockHandler = jest.fn();
+
+    it('renders the label and input with the correct props', () => {
+      const props = {
+        type: 'text',
+        name: 'username',
+        label: 'Username',
+        handler: mockHandler,
+        value: '',
+      };
+      render(<UserAccountInput {...props} />);
+      expect(screen.getByLabelText('Username')).toBeInTheDocument();
+      expect(screen.getByRole('textbox')).toHaveAttribute('type', 'text');
+      expect(screen.getByRole('textbox')).toHaveAttribute('name', 'username');
+      expect(screen.getByRole('textbox')).toHaveAttribute('value', '');
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: 'test' } });
+      expect(mockHandler).toHaveBeenCalledTimes(1);
     });
-    });
+});
