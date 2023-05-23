@@ -16,6 +16,7 @@ import { CartContext } from "../../Contexts/CartContext";
 import { LocalUser, selectCurrentUser, setCurrentUser } from "../../Store/user";
 import NavBarElement from "./NavBarElement";
 import NavBarElementLink from "./NavBarElementLink";
+import NavBarIcon from "./NavBarIcon";
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ const NavBar = () => {
             gap: "1rem",
           }}
         >
+          <NavBarIcon/>
           <NavBarElement>
             <NavBarElementLink link="/home" text="HOME" />
           </NavBarElement>
