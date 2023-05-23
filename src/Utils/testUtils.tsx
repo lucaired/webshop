@@ -1,24 +1,42 @@
-import React, {ReactElement} from 'react'
-import {render, RenderOptions} from '@testing-library/react'
+import React from 'react'
+import {RenderOptions, render } from '@testing-library/react'
 import { Provider } from 'react-redux';
 import { store } from '../Store/store';
 import { BrowserRouter } from 'react-router-dom';
+import { RootState, rootReducer } from '../Store/rootReducer';
+import { createStore } from 'redux';
 
-const AllTheProviders = (
-    {children}: {children: React.ReactNode}
-    
-  ) => {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>{children}</BrowserRouter>
-    </Provider>
-  )
+interface WrapperProps {
+  children: React.ReactNode
 }
 
-const customRender = (
-  ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>,
-) => render(ui, {wrapper: AllTheProviders, ...options})
+interface RenderWithProvidersOptions {
+  preloadedState?: RootState;
+  store?: any;
+  renderOptions?: RenderOptions;
+}
 
-export * from '@testing-library/react'
-export {customRender as render}
+export function renderWithProviders(
+  ui: React.ReactElement,
+  {
+    preloadedState = {
+      user: {
+        currentUser: null,
+      },
+    },
+    // Automatically create a store instance if no store was passed in
+    store = createStore(rootReducer, preloadedState),
+    ...renderOptions
+  }: RenderWithProvidersOptions = {}
+) {
+  const Wrapper: React.FC<WrapperProps> = ({ children }) => {
+    return (
+      <Provider store={store}>
+        <BrowserRouter>{children}</BrowserRouter>
+      </Provider>
+    );
+  }
+
+  // Return an object with the store and all of RTL's query functions
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+}
