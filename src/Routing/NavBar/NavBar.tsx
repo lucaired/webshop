@@ -28,8 +28,7 @@ const NavBar = () => {
     dispatch(setCurrentUser(null));
   };
 
-  const { isCartHidden, setIsCartHidden, cartItemsCount } =
-    useContext(CartContext);
+  const { isCartHidden, setIsCartHidden, cartItemsCount } = useContext(CartContext);
 
   return (
     <Fragment>

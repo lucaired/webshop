@@ -1,6 +1,9 @@
 import { Outlet } from "react-router-dom";
 import Directory from "../../Components/Directory";
 import { CategoryInfo } from "../../Components/CategoryContainer/CategoryContainer";
+import SpecialOffer from "../../Components/SpecialOffer";
+import { useContext } from "react";
+import { CategoriesContext, Product } from "../../Contexts/CategoryContext";
 
 const Home = () => {
     const categoriesJSON = `[
@@ -31,11 +34,31 @@ const Home = () => {
         }
     ]`;
   
-    const categories: CategoryInfo[] = JSON.parse(categoriesJSON);
+    const categoriesInfos: CategoryInfo[] = JSON.parse(categoriesJSON);
+
+    const { categories } = useContext(CategoriesContext);
+
+    // extract the procucts from the categories
+    const products: Product[] = [];
+    categories.forEach((value, key) => {
+        value.forEach(product => {
+            products.push(product);
+        });
+    });
+
+    // pick three random products
+    const specialOfferProducts: Product[] = [];
+
+    for (let i = 0; i < 3; i++) {
+      const randomIndex = Math.floor(Math.random() * products.length);
+      specialOfferProducts.push(products[randomIndex]);
+      products.splice(randomIndex, 1);
+    }
 
     return (
             <div>
-              <Directory categories={categories} />
+              <Directory categories={categoriesInfos} />
+              <SpecialOffer products={specialOfferProducts}/>
               <Outlet />
             </div>
     );

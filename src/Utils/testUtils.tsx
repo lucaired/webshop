@@ -1,7 +1,6 @@
 import React from 'react'
 import {RenderOptions, render } from '@testing-library/react'
 import { Provider } from 'react-redux';
-import { store } from '../Store/store';
 import { BrowserRouter } from 'react-router-dom';
 import { RootState, rootReducer } from '../Store/rootReducer';
 import { createStore } from 'redux';
