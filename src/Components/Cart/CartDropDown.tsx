@@ -18,9 +18,11 @@ const CartDropDown = () => {
                 padding: '20px',
                 border: '1px solid black',
                 backgroundColor: 'white',
-                top: '90px',
-                right: '40px',
-                zIndex: 5
+                top: '110px',
+                right: '55px',
+                zIndex: 5,
+                boxShadow: '0 0 5px black',
+                borderRadius: '0.5rem',
             }}
         >
             <div

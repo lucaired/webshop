@@ -4,23 +4,21 @@ import React from 'react';
 
 interface NavBarElementProps {
     children: JSX.Element;
+    style?: React.CSSProperties;
 }
 
-const NavBarElement: React.FC<NavBarElementProps> = ({ children }) => {
-
-    // add some nice styling to the NavBarElement component
-
-    const style = {
-        border: '1px solid black',
-        boxShadow: '0 0 5px black',
-        padding: '5px',
-        borderRadius: '0.5rem',
-        color: 'black',
-        cursor: 'pointer',
-    }
+const NavBarElement: React.FC<NavBarElementProps> = ({ children, style }) => {
 
     return (
-        <div style={style}>
+        <div style={{
+            border: '1px solid black',
+            boxShadow: '0 0 5px black',
+            borderRadius: '0.5rem',
+            padding: '5px',
+            color: 'black',
+            cursor: 'pointer',
+            ...style
+        }}>
             {children}
         </div>
     );

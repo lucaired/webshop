@@ -23,9 +23,11 @@ const ProductCard = (props: ProductCardProps) => {
                 display: 'flex',
                 flexDirection: 'column',
                 width: '100%',
-                height: '350px',
+                height: '400px',
                 alignItems: 'center',
                 position: 'relative',
+                boxShadow: '0 0 5px black',
+                borderRadius: '0.5rem'
             }}
         >
             <img 
@@ -33,7 +35,9 @@ const ProductCard = (props: ProductCardProps) => {
                     width: '100%',
                     height: '95%',
                     objectFit: 'cover',
-                    marginBottom: '5px'
+                    borderRadius: '0.5rem',
+                    borderBottomLeftRadius: '0',
+                    borderBottomRightRadius: '0',
                 }}
                 src={imageUrl}
                 alt={name} 
@@ -41,7 +45,7 @@ const ProductCard = (props: ProductCardProps) => {
             <div
                 style={{
                     display: 'flex',
-                    width: '100%',
+                    width: '95%',
                     height: '5%',
                     justifyContent: 'space-between',
                     fontSize: '18px',
@@ -49,7 +53,6 @@ const ProductCard = (props: ProductCardProps) => {
             >
                 <span
                     style={{
-                        width:"90%",
                         marginBottom: '15px'
                     }}
                 >
@@ -61,6 +64,11 @@ const ProductCard = (props: ProductCardProps) => {
             </div>
             <button
                 onClick={() => addProductToCart(props.product)}
+                style={{
+                    borderRadius: '0.5rem',
+                    backgroundColor: 'white',
+                    opacity: '0.75',
+                }}
             >
                 ADD TO CART
             </button>

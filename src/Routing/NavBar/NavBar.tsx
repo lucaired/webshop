@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
  * https://stackoverflow.com/questions/41421596/why-doesnt-flexbox-work-on-direct-child-of-body
  */
 
-import { Link, Outlet } from "react-router-dom"; // shows the child routes
+import { Outlet } from "react-router-dom"; // shows the child routes
 import { signOutUser } from "../../Utils/Firebase/firebase";
 import CartIcon from "../../Components/Cart/CartIcon";
 import CartDropDown from "../../Components/Cart/CartDropDown";
@@ -50,7 +50,13 @@ const NavBar = () => {
             gap: "1rem",
           }}
         >
-          <NavBarIcon/>
+          <NavBarElement
+            style={{
+              paddingRight: "10px",
+            }}
+          >
+            <NavBarIcon/>
+          </NavBarElement>
           <NavBarElement>
             <NavBarElementLink link="/home" text="HOME" />
           </NavBarElement>
@@ -64,6 +70,7 @@ const NavBar = () => {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            gap: "1rem",
           }}
         >
           {localUser && localUser.isLoggedIn ? (
@@ -80,11 +87,13 @@ const NavBar = () => {
               <NavBarElementLink link="/sign-in" text="SIGN IN" />
             </NavBarElement>
           )}
+          <NavBarElement>
           <CartIcon
             onClickHandler={() =>
               cartItemsCount && setIsCartHidden(!isCartHidden)
             }
           />
+          </NavBarElement>
         </div>
         {!isCartHidden && <CartDropDown />}
       </div>

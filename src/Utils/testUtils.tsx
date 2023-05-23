@@ -4,7 +4,10 @@ import { Provider } from 'react-redux';
 import { store } from '../Store/store';
 import { BrowserRouter } from 'react-router-dom';
 
-const AllTheProviders = ({children}: {children: React.ReactNode}) => {
+const AllTheProviders = (
+    {children}: {children: React.ReactNode}
+    
+  ) => {
   return (
     <Provider store={store}>
       <BrowserRouter>{children}</BrowserRouter>
