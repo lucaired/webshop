@@ -20,7 +20,7 @@ export default function useCategories(){
                 const newCategories = await getDocumentsFromCollection('collections');
                 if (newCategories !== undefined) {
                     newCategories.forEach((category: Category) => {
-                        const newProducts = category.items.map((item: any, index: number) => new Product(index, item.name, item.imageUrl, item.price));
+                        const newProducts = category.items.map((item: any) => new Product(item.id, item.name, item.imageUrl, item.price));
                         const lowerCaseTitle = category.title.toLowerCase();
                         setCategory((prev) => new Map(prev).set(lowerCaseTitle, newProducts));
                     })
