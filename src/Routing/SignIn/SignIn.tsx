@@ -8,8 +8,13 @@ const SignIn = () => {
     const navigate = useNavigate();
 
     const logGoogleIn = async () => {
-        await signInWithGooglePopup();
-        navigate("/shop");
+        try {
+            await signInWithGooglePopup();
+            navigate("/shop");
+        } catch (error: any) {
+            // TODO: handle these errors
+            console.log(error);
+        }
     }
 
     return (

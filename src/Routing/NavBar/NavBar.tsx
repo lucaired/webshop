@@ -14,6 +14,7 @@ import CartIcon from "../../Components/Cart/CartIcon";
 import CartDropDown from "../../Components/Cart/CartDropDown";
 import { CartContext } from "../../Contexts/CartContext";
 import { LocalUser, selectCurrentUser, setCurrentUser } from "../../Store/user";
+import NavBarElement from "./NavBarElement";
 
 const NavBar = () => {
 
@@ -47,12 +48,8 @@ const NavBar = () => {
                         gap: '1rem',
                     }}
                 >
-                <Link className='nav-link' to='/home'>
-                    HOME
-                </Link>
-                <Link className='nav-link' to='/shop'>
-                    SHOP
-                </Link>
+                <NavBarElement link='/home' text='HOME'/>
+                <NavBarElement link='/shop' text='SHOP'/>
                 </div>
                 <div
                     style={{
@@ -72,11 +69,7 @@ const NavBar = () => {
                         >
                             <span style={{textDecoration: 'none'}}>{localUser.name}{' '}|{' '}</span>SIGN OUT
                         </p>
-                    : <Link 
-                            to='/sign-in'
-                        >
-                            SIGN IN
-                        </Link>
+                    : <NavBarElement link='/sign-in' text='SIGN IN'/>
                     }
                     <CartIcon
                         onClickHandler={() => cartItemsCount && setIsCartHidden(!isCartHidden)}
