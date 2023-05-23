@@ -1,18 +1,28 @@
 // Generate a NavBarElement component
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 interface NavBarElementProps {
-    link: string;
-    text: string;
+    children: JSX.Element;
 }
 
-const NavBarElement: React.FC<NavBarElementProps> = ({ link, text }) => {
+const NavBarElement: React.FC<NavBarElementProps> = ({ children }) => {
+
+    // add some nice styling to the NavBarElement component
+
+    const style = {
+        border: '1px solid black',
+        boxShadow: '0 0 5px black',
+        padding: '5px',
+        borderRadius: '0.5rem',
+        color: 'black',
+        cursor: 'pointer',
+    }
+
     return (
-        <Link className='nav-link' to={link}>
-            {text}
-        </Link>
+        <div style={style}>
+            {children}
+        </div>
     );
 };
 
