@@ -12,12 +12,14 @@ import { Outlet } from "react-router-dom"; // shows the child routes
 import { signOutUser } from "../../Utils/Firebase/firebase";
 import CartIcon from "../../Components/Cart/CartIcon";
 import CartDropDown from "../../Components/Cart/CartDropDown";
-import { LocalUser, selectCurrentUser, setCurrentUser } from "../../Store/user";
 import NavBarElement from "./NavBarElement";
 import NavBarElementLink from "./NavBarElementLink";
 import NavBarIcon from "./NavBarIcon";
 import { selectIsCartHidden, selectCartItemsCount } from "../../Store/cart/cart.selector";
 import { setIsCartHidden } from "../../Store/cart/cart.actions";
+import { setCurrentUser } from "../../Store/user/user.actions";
+import { LocalUser } from "../../Store/user/user.types";
+import { selectCurrentUser } from "../../Store/user/user.selectors";
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -27,7 +29,7 @@ const NavBar = () => {
   const signOutHandler = async () => {
     try {
       await signOutUser();
-      dispatch(setCurrentUser(null));
+      dispatch(setCurrentUser(undefined));
     } catch (error) {
       console.log(error);
     }

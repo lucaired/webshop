@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, UserCredential, signInWithEmailAndPassword, User } from 'firebase/auth';
 import { DocumentData, DocumentReference, collection, doc, getDoc, getFirestore, setDoc, writeBatch, getDocs } from 'firebase/firestore';
-import { LocalUser } from '../../Store/user';
+import { LocalUser } from '../../Store/user/user.types';
 
 /** Authentication */
 

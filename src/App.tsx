@@ -8,11 +8,12 @@ import NavBar from './Routing/NavBar/NavBar';
 import Home from './Routing/Home/Home';
 import Shop from './Components/Shop/Shop';
 import Checkout from './Components/Checkout/Checkout';
-import { LocalUser, setCurrentUser } from './Store/user';
 import { getUserDoc, onAuthStateChanged } from './Utils/Firebase/firebase';
 import useCategories from './Hooks/useCategories';
 import { setCategories } from './Store/categories/categories.actions';
 import { selectCartItemsCount } from './Store/cart/cart.selector';
+import { setCurrentUser } from './Store/user/user.actions';
+import { LocalUser } from './Store/user/user.types';
 
 function App() {
 
@@ -37,7 +38,7 @@ function App() {
         }
         dispatch(setCurrentUser(new LocalUser(userDoc.displayName || 'No name', userDoc.email || 'No mail', true)));
       } else {
-          dispatch(setCurrentUser(null));
+          dispatch(setCurrentUser(undefined));
       }
     });
 
