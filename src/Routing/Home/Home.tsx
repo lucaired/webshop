@@ -38,18 +38,9 @@ const Home = () => {
   
     const categoriesInfos: CategoryInfo[] = JSON.parse(categoriesJSON);
 
-    // extract the procucts from the categories
-    const products: Product[] = [];
-    useSelector(selectCategories).forEach((value: any[], key: any) => {
-        value.forEach(product => {
-            products.push(product);
-        });
-    });
-
     return (
       <div>
         <Directory categories={categoriesInfos} />
-        <SpecialOffer products={products.slice(0,3)}/>
         <Outlet />
       </div>
     );
