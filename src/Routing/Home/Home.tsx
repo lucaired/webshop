@@ -4,7 +4,7 @@ import { CategoryInfo } from "../../Components/CategoryContainer/CategoryContain
 import SpecialOffer from "../../Components/SpecialOffer";
 import { useSelector } from "react-redux";
 import { selectCategories } from "../../Store/categories/categories.selector";
-import { Product } from "../../Store/categories/categories.reducer";
+import { Product } from "../../Store/categories/categories.types";
 
 const Home = () => {
 

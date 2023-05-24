@@ -1,6 +1,9 @@
-import { Fragment, useContext, useEffect } from "react";
-import { CartContext, CartItem } from "../../Contexts/CartContext";
+import { Fragment, useEffect } from "react";
 import './checkout.scss';
+import { useDispatch, useSelector } from "react-redux";
+import { changeCartItemQuantity, removeCartItem, setIsCartHidden } from "../../Store/cart/cart.actions";
+import { CartItem } from "../../Store/cart/cart.types";
+import { selectCartItems, selectCartTotal } from "../../Store/cart/cart.selector";
 
 interface CheckoutCardProps {
     cartItem: CartItem;
@@ -8,17 +11,17 @@ interface CheckoutCardProps {
 
 const CheckoutCard = (props: CheckoutCardProps) => {
     const { cartItem } = props;
-    const { removeCartItem, changeCartItemQuantity } = useContext(CartContext);
+    const dispatch = useDispatch();
 
     const handler = (direction: string) => {
         if (direction === 'up') {
-            changeCartItemQuantity(props.cartItem.product, 1)
+            dispatch(changeCartItemQuantity(props.cartItem.product, 1))
         } else if (direction === 'down') {
             const decrementedQuantity = cartItem.quantity - 1;
             if (decrementedQuantity === 0) {
-                removeCartItem(props.cartItem.product)
+                dispatch(removeCartItem(props.cartItem.product))
             } else {
-                changeCartItemQuantity(props.cartItem.product, -1)
+                dispatch(changeCartItemQuantity(props.cartItem.product, -1))
             }
         }
     }
@@ -77,10 +80,12 @@ const CheckoutCard = (props: CheckoutCardProps) => {
 
 
 const Checkout = () => {
-    const { cartItems, cartTotal, setIsCartHidden } = useContext(CartContext);
+    const dispatch = useDispatch();
+    const cartItems = useSelector(selectCartItems);
+    const cartTotal = useSelector(selectCartTotal);
 
     useEffect(() => {
-        setIsCartHidden(true);
+        dispatch(setIsCartHidden(true))
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

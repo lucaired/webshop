@@ -1,5 +1,5 @@
-import { useEffect, useContext } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
@@ -8,11 +8,11 @@ import NavBar from './Routing/NavBar/NavBar';
 import Home from './Routing/Home/Home';
 import Shop from './Components/Shop/Shop';
 import Checkout from './Components/Checkout/Checkout';
-import { CartContext } from './Contexts/CartContext';
 import { LocalUser, setCurrentUser } from './Store/user';
 import { getUserDoc, onAuthStateChanged } from './Utils/Firebase/firebase';
 import useCategories from './Hooks/useCategories';
 import { setCategories } from './Store/categories/categories.actions';
+import { selectCartItemsCount } from './Store/cart/cart.selector';
 
 function App() {
 
@@ -22,6 +22,7 @@ function App() {
   const { categories } = useCategories();
 
   useEffect(() => {
+    
     const unsubscribe = onAuthStateChanged(async (user) => {
       if (user) {
         const firebaseUserAuth = {
@@ -45,7 +46,7 @@ function App() {
     return unsubscribe;
   }, [dispatch, categories]);
 
-  const { cartItemsCount} = useContext(CartContext);
+  const cartItemsCount = useSelector(selectCartItemsCount);
 
   return (
     <Routes>

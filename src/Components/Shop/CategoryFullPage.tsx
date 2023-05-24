@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import { selectCategories } from "../../Store/categories/categories.selector";
 import { useSelector } from "react-redux";
-import { Product } from "../../Store/categories/categories.reducer";
+import { Product } from "../../Store/categories/categories.types";
 
 const CategoryFullPage = () => {
     

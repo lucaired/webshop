@@ -1,17 +1,20 @@
-import { useContext } from "react";
-import { CartContext, CartItem } from "../../Contexts/CartContext";
+import { useDispatch } from "react-redux";
+import { addCartItem, removeCartItem, changeCartItemQuantity, setCartItemQuantity } from "../../Store/cart/cart.actions";
+import { CartItem } from "../../Store/cart/cart.types";
+import { Product } from "../../Store/categories/categories.types";
 
 const CartItemQuantity = (props: CartItemCardProps) => {
 
-    const { removeCartItem, setCartItemQuantity, changeCartItemQuantity } = useContext(CartContext);
+    const dispatch = useDispatch();
 
     const handler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         if (parseInt(e.target.value) === 0) {
-            removeCartItem(props.cartItem.product)
+            dispatch(addCartItem(props.cartItem.product));
+
         } else if (parseInt(e.target.value) === 10) {
-            changeCartItemQuantity(props.cartItem.product, 10)
+            dispatch(changeCartItemQuantity(props.cartItem.product, 10))
         } else {
-            setCartItemQuantity(props.cartItem.product, parseInt(e.target.value))
+            dispatch(setCartItemQuantity(props.cartItem.product, parseInt(e.target.value)))
         }
     }
 
@@ -51,8 +54,13 @@ interface  CartItemCardProps {
 
 const CartItemCard = (props: CartItemCardProps) => {
 
+    const dispatch = useDispatch();
+
     const { product } = props.cartItem
-    const { removeCartItem } = useContext(CartContext);
+
+    function handleRemoveClick(product: Product): void {
+        dispatch(removeCartItem(product));
+    }
 
     return (
         <div
@@ -95,7 +103,7 @@ const CartItemCard = (props: CartItemCardProps) => {
                     cartItem={props.cartItem} 
                 />
                 <button
-                    onClick={() => removeCartItem(product)}
+                    onClick={() => handleRemoveClick(product)}
                 >
                     Remove
                 </button>

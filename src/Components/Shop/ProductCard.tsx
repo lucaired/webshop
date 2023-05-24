@@ -1,7 +1,7 @@
-import { useContext } from "react";
+import { useDispatch } from 'react-redux';
+import { Product } from '../../Store/categories/categories.types';
 import './product-card.styles.scss'
-import { CartContext } from "../../Contexts/CartContext";
-import { Product } from "../../Store/categories/categories.reducer";
+import { addCartItem } from '../../Store/cart/cart.actions';
 
 interface ProductCardProps {
     product: Product;
@@ -10,10 +10,10 @@ interface ProductCardProps {
 const ProductCard = (props: ProductCardProps) => {
     const { name, price, imageUrl } = props.product;
 
-    const { addCartItem } = useContext(CartContext);
+    const dispatch = useDispatch();
 
     const addProductToCart = (product: Product) => {
-        addCartItem(product)
+        dispatch(addCartItem(product));
     }
 
     return (

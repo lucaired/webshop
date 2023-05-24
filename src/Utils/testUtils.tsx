@@ -24,6 +24,10 @@ export function renderWithProviders(
       },
       categories: {
         categories: [],
+      },
+      cart: {
+        cartItems: [],
+        isCartHidden: true,
       }
     },
     // Automatically create a store instance if no store was passed in

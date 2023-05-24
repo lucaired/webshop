@@ -1,5 +1,5 @@
 import React, { Reducer, createContext, useReducer } from "react";
-import { Product } from "../Store/categories/categories.reducer";
+import { Product } from "../Store/categories/categories.types";
 
 export class CartItem {
     product: Product;

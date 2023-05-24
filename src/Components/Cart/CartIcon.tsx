@@ -1,8 +1,7 @@
-import { useContext } from 'react';
-
 // Use a SVG as a React Component !!!
 import { ReactComponent as ShoppingIcon } from './shopping-bag.svg';
-import { CartContext } from '../../Contexts/CartContext';
+import { useSelector } from 'react-redux';
+import { selectCartItemsCount } from '../../Store/cart/cart.selector';
 
 interface CartIconProps {
     onClickHandler: () => void;
@@ -12,7 +11,7 @@ const CartIcon = (props: CartIconProps) => {
 
     const { onClickHandler } = props;
 
-    const { cartItemsCount } = useContext(CartContext);
+    const cartItemsCount  = useSelector(selectCartItemsCount);
     
     return (
         <div

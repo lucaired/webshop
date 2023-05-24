@@ -1,30 +1,13 @@
-import { CATEGORY_ACTION_TYPES } from "./categories.types";
-
-export class Product {
-    id: number;
-    name: string;
-    imageUrl: string;
-    price: number;
-
-    constructor(id: number, name: string, imageUrl: string, price: number) {
-        this.id = id;
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.price = price;
-    }
-}
+import { CATEGORY_ACTION_TYPES, Product } from "./categories.types";
 
 export const CATEGORIES_INITIAL_STATE = {
     categories: new Map<string, Product[]>()
 }
 
-
-
 interface CategoryAction {
     type: typeof CATEGORY_ACTION_TYPES.SET_CATEGORIES;
     payload: any;
 }
-
 
 export const categoriesReducer = (state = CATEGORIES_INITIAL_STATE, action: CategoryAction) => {
     const { type, payload } = action;

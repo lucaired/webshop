@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react";
+import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 /**
@@ -12,11 +12,12 @@ import { Outlet } from "react-router-dom"; // shows the child routes
 import { signOutUser } from "../../Utils/Firebase/firebase";
 import CartIcon from "../../Components/Cart/CartIcon";
 import CartDropDown from "../../Components/Cart/CartDropDown";
-import { CartContext } from "../../Contexts/CartContext";
 import { LocalUser, selectCurrentUser, setCurrentUser } from "../../Store/user";
 import NavBarElement from "./NavBarElement";
 import NavBarElementLink from "./NavBarElementLink";
 import NavBarIcon from "./NavBarIcon";
+import { selectIsCartHidden, selectCartItemsCount } from "../../Store/cart/cart.selector";
+import { setIsCartHidden } from "../../Store/cart/cart.actions";
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,12 @@ const NavBar = () => {
     }
   };
 
-  const { isCartHidden, setIsCartHidden, cartItemsCount } = useContext(CartContext);
+  const isCartHidden = useSelector(selectIsCartHidden);
+  const cartItemsCount = useSelector(selectCartItemsCount);
+
+  function handleCartIconClick(): void {
+    cartItemsCount && dispatch(setIsCartHidden(!isCartHidden))
+  }
 
   return (
     <Fragment>
@@ -92,9 +98,7 @@ const NavBar = () => {
           )}
           <NavBarElement>
           <CartIcon
-            onClickHandler={() =>
-              cartItemsCount && setIsCartHidden(!isCartHidden)
-            }
+            onClickHandler={() => handleCartIconClick()}
           />
           </NavBarElement>
         </div>
