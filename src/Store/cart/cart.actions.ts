@@ -16,3 +16,5 @@ export const changeCartItemQuantity = (cartItem: Product, quantity: number) =>
 
 export const setIsCartHidden = (isCartHidden: boolean) => 
     createAction(CART_ACTION_TYPES.SET_IS_CART_HIDDEN, isCartHidden);
+
+export const clearCart = () => createAction(CART_ACTION_TYPES.CLEAR_CART, null);

@@ -1,14 +1,20 @@
 import CartItemCard from "./CartItemCard";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCartItems, selectCartTotal } from "../../Store/cart/cart.selector";
+import { clearCart, setIsCartHidden } from "../../Store/cart/cart.actions";
 
 const CartDropDown = () => {
 
+    const dispatch = useDispatch();
     const cartItems = useSelector(selectCartItems);
     const cartTotal = useSelector(selectCartTotal);
-
     const navigate = useNavigate();
+
+    function handleClearCartButtonClick(): void {
+        dispatch(clearCart());
+        dispatch(setIsCartHidden(true));
+    }
 
     return (
         <div
@@ -45,7 +51,13 @@ const CartDropDown = () => {
             <button
                 style={{
                     marginTop: 'auto',
+                    marginBottom: '10px',
                 }}
+                onClick={()=>handleClearCartButtonClick()}
+            >
+                CLEAR CART
+            </button>
+            <button
                 onClick={()=>navigate('/checkout')}
             >
                 GO TO CHECKOUT
