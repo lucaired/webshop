@@ -2,10 +2,12 @@ import { Outlet } from "react-router-dom";
 import Directory from "../../Components/Directory";
 import { CategoryInfo } from "../../Components/CategoryContainer/CategoryContainer";
 import SpecialOffer from "../../Components/SpecialOffer";
-import { useContext } from "react";
-import { CategoriesContext, Product } from "../../Contexts/CategoryContext";
+import { useSelector } from "react-redux";
+import { selectCategories } from "../../Store/categories/categories.selector";
+import { Product } from "../../Store/categories/categories.reducer";
 
 const Home = () => {
+
     const categoriesJSON = `[
         {
           "id": 1,
@@ -36,22 +38,20 @@ const Home = () => {
   
     const categoriesInfos: CategoryInfo[] = JSON.parse(categoriesJSON);
 
-    const { categories } = useContext(CategoriesContext);
-
     // extract the procucts from the categories
     const products: Product[] = [];
-    categories.forEach((value, key) => {
+    useSelector(selectCategories).forEach((value: any[], key: any) => {
         value.forEach(product => {
             products.push(product);
         });
     });
 
     return (
-            <div>
-              <Directory categories={categoriesInfos} />
-              <SpecialOffer products={products.slice(0,3)}/>
-              <Outlet />
-            </div>
+      <div>
+        <Directory categories={categoriesInfos} />
+        <SpecialOffer products={products.slice(0,3)}/>
+        <Outlet />
+      </div>
     );
 }
     

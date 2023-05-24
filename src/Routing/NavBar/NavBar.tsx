@@ -24,8 +24,12 @@ const NavBar = () => {
   const localUser: LocalUser = useSelector(selectCurrentUser);
 
   const signOutHandler = async () => {
-    await signOutUser();
-    dispatch(setCurrentUser(null));
+    try {
+      await signOutUser();
+      dispatch(setCurrentUser(null));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const { isCartHidden, setIsCartHidden, cartItemsCount } = useContext(CartContext);

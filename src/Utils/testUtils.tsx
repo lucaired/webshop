@@ -22,6 +22,9 @@ export function renderWithProviders(
       user: {
         currentUser: null,
       },
+      categories: {
+        categories: [],
+      }
     },
     // Automatically create a store instance if no store was passed in
     store = createStore(rootReducer, preloadedState),

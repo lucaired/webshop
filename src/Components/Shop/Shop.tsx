@@ -3,7 +3,6 @@ import CategoryPreview from "./CategoryPreviewPage";
 import CategoryFullPage from "./CategoryFullPage";
 
 const Shop = () => {
-
     return (
         <Routes>
             <Route index element={<CategoryPreview />} />

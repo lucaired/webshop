@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { Product } from "../../Contexts/CategoryContext";
 import './product-card.styles.scss'
 import { CartContext } from "../../Contexts/CartContext";
+import { Product } from "../../Store/categories/categories.reducer";
 
 interface ProductCardProps {
     product: Product;

@@ -1,11 +1,12 @@
-import { useContext } from "react";
 import { useParams } from "react-router-dom";
-import { CategoriesContext, Product } from "../../Contexts/CategoryContext";
 import ProductCard from "./ProductCard";
+import { selectCategories } from "../../Store/categories/categories.selector";
+import { useSelector } from "react-redux";
+import { Product } from "../../Store/categories/categories.reducer";
 
 const CategoryFullPage = () => {
     
-    const { categories } = useContext(CategoriesContext);
+    const categories = useSelector(selectCategories);
     const { categorySlug } = useParams<{categorySlug: string}>();
     const products: Product[] = categorySlug ? categories.get(categorySlug) || [] : []; 
 

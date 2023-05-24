@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 
 import './App.css';
@@ -11,11 +11,15 @@ import Checkout from './Components/Checkout/Checkout';
 import { CartContext } from './Contexts/CartContext';
 import { LocalUser, setCurrentUser } from './Store/user';
 import { getUserDoc, onAuthStateChanged } from './Utils/Firebase/firebase';
-
+import useCategories from './Hooks/useCategories';
+import { setCategories } from './Store/categories/categories.actions';
 
 function App() {
 
   const dispatch = useDispatch();
+
+  // call useCategories hook to load the categories
+  const { categories } = useCategories();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(async (user) => {
@@ -35,15 +39,17 @@ function App() {
           dispatch(setCurrentUser(null));
       }
     });
+
+    dispatch(setCategories(categories));
+
     return unsubscribe;
-  }, [dispatch]);
+  }, [dispatch, categories]);
 
   const { cartItemsCount} = useContext(CartContext);
 
   return (
     <Routes>
       <Route path='/' element={<NavBar />}>
-        <Route index element={<Home />} />
         <Route path='home' element={<Home />} />
         <Route path='shop/*' element={<Shop />} />
         <Route path='sign-in' element={<SignIn />} />

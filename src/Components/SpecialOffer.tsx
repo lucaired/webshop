@@ -1,6 +1,6 @@
 import React from "react";
 import ProductCard from "./Shop/ProductCard";
-import { Product } from "../Contexts/CategoryContext";
+import { Product } from "../Store/categories/categories.reducer";
 
 interface SpecialOfferProps {
     products: Product[];
