@@ -46,19 +46,10 @@ const Home = () => {
         });
     });
 
-    // pick three random products
-    const specialOfferProducts: Product[] = [];
-
-    for (let i = 0; i < 3; i++) {
-      const randomIndex = Math.floor(Math.random() * products.length);
-      specialOfferProducts.push(products[randomIndex]);
-      products.splice(randomIndex, 1);
-    }
-
     return (
             <div>
               <Directory categories={categoriesInfos} />
-              <SpecialOffer products={specialOfferProducts}/>
+              <SpecialOffer products={products.slice(0,3)}/>
               <Outlet />
             </div>
     );

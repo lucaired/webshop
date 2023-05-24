@@ -17,7 +17,22 @@ const SpecialOffer: React.FC<SpecialOfferProps> = ({products}) => {
             justifyContent: "center",
             alignItems: "center",
         }}>
-            <h1 className="title">Special Offers</h1>
+            <h1 
+                style={{ 
+                    color: '#4a4a4a',
+                    fontSize: '2rem',
+                    fontWeight: 'bold',
+                    textTransform: 'uppercase',
+                    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
+                    padding: '10px 15px',
+                    borderRadius: '5px',
+                    backgroundColor: '#fff',
+                    border: '1px solid #e6e6e6',    
+                }}
+                className="title"
+            >
+                SPECIAL OFFERS
+            </h1>
             <div
                 style={{
                     display: "flex",
