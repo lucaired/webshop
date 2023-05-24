@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeCartItemQuantity, removeCartItem, setIsCartHidden } from "../../Store/cart/cart.actions";
 import { CartItem } from "../../Store/cart/cart.types";
 import { selectCartItems, selectCartTotal } from "../../Store/cart/cart.selector";
+import { Product } from "../../Store/categories/categories.types";
 
 interface CheckoutCardProps {
     cartItem: CartItem;
@@ -24,6 +25,10 @@ const CheckoutCard = (props: CheckoutCardProps) => {
                 dispatch(changeCartItemQuantity(props.cartItem.product, -1))
             }
         }
+    }
+
+    function handleRemoveItemClick(product: Product): void {
+        dispatch(removeCartItem(product))
     }
 
     return <div
@@ -68,7 +73,7 @@ const CheckoutCard = (props: CheckoutCardProps) => {
         </span>
         <span>{cartItem.product.price} €</span>
         <span 
-            onClick={()=>removeCartItem(cartItem.product)}
+            onClick={()=>handleRemoveItemClick(cartItem.product)}
             style={{
                 cursor: 'pointer',
             }}

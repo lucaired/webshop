@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { addCartItem, removeCartItem, changeCartItemQuantity, setCartItemQuantity } from "../../Store/cart/cart.actions";
+import { removeCartItem, changeCartItemQuantity, setCartItemQuantity } from "../../Store/cart/cart.actions";
 import { CartItem } from "../../Store/cart/cart.types";
 import { Product } from "../../Store/categories/categories.types";
 
@@ -9,8 +9,7 @@ const CartItemQuantity = (props: CartItemCardProps) => {
 
     const handler = (e: React.ChangeEvent<HTMLSelectElement>) => {
         if (parseInt(e.target.value) === 0) {
-            dispatch(addCartItem(props.cartItem.product));
-
+            dispatch(removeCartItem(props.cartItem.product));
         } else if (parseInt(e.target.value) === 10) {
             dispatch(changeCartItemQuantity(props.cartItem.product, 10))
         } else {
