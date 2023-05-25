@@ -43,7 +43,7 @@ const CartDropDown = () => {
                 {cartItems.map((cartItem, index) => 
                     <CartItemCard 
                         cartItem={cartItem}
-                        key={index+cartItem.product.id}
+                        key={cartItem.product.id}
                     />
                 )}
             </div>
