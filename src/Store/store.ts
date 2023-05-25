@@ -13,7 +13,9 @@ const persistConfig = {
     storage,
 }
 
+const composeEnhancer = (process.env.NODE_ENV !== 'production' && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || composeWithDevTools;
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(...middlewares)));
+export const store = createStore(persistedReducer, composeEnhancer(applyMiddleware(...middlewares)));
 export const persistor = persistStore(store);
