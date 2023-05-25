@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { RootState, rootReducer } from '../Store/rootReducer';
 import { createStore } from 'redux';
+import { CATEGORIES_INITIAL_STATE } from '../Store/categories/categories.reducer';
+import { USER_INITIAL_STATE } from '../Store/user/user.types';
+import { CART_INITIAL_STATE } from '../Store/cart/cart.reducer';
 
 interface WrapperProps {
   children: React.ReactNode
@@ -19,16 +22,9 @@ export function renderWithProviders(
   ui: React.ReactElement,
   {
     preloadedState = {
-      user: {
-        currentUser: null,
-      },
-      categories: {
-        categories: [],
-      },
-      cart: {
-        cartItems: [],
-        isCartHidden: true,
-      }
+      user: USER_INITIAL_STATE,
+      categories: CATEGORIES_INITIAL_STATE,
+      cart: CART_INITIAL_STATE
     },
     // Automatically create a store instance if no store was passed in
     store = createStore(rootReducer, preloadedState),

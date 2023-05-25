@@ -1,5 +1,7 @@
-export const CATEGORY_ACTION_TYPES = {
-    SET_CATEGORIES: 'categories/SET_CATEGORIES',
+export enum CATEGORY_ACTION_TYPES {
+    FETCH_CATEGORIES_START = 'categories/FETCH_CATEGORIES_START',
+    FETCH_CATEGORIES_SUCCESS = 'categories/FETCH_CATEGORIES_SUCCESS',
+    FETCH_CATEGORIES_FAILURE = 'categories/FETCH_CATEGORIES_FAILURE',
 }
 
 export class Product {
@@ -14,4 +16,9 @@ export class Product {
         this.imageUrl = imageUrl;
         this.price = price;
     }
+}
+
+export interface Category {
+    title: string;
+    items: Product[];
 }

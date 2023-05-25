@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, UserCredential, signInWithEmailAndPassword, User } from 'firebase/auth';
-import { DocumentData, DocumentReference, collection, doc, getDoc, getFirestore, setDoc, writeBatch, getDocs } from 'firebase/firestore';
+import { DocumentData, DocumentReference, collection, doc, getDoc, getFirestore, setDoc, writeBatch, getDocs, query } from 'firebase/firestore';
 import { LocalUser } from '../../Store/user/user.types';
 
 /** Authentication */
@@ -143,9 +143,12 @@ export const addCollectionAndDocuments = async (collectionKey: string, objectsTo
     return await batch.commit();
 }
 
-export const getDocumentsFromCollection = async (collectionKey: string) => {
-    const collectionRef = collection(db, collectionKey);
-    const collectionSnapshot = await getDocs(collectionRef);
-    const collectionMap = collectionSnapshot.docs.map((doc: any) => doc.data());
-    return collectionMap;
-}
+export const getCategoriesAndDocuments = async (): Promise<any[]> => {
+  const collectionRef = collection(db, 'collections');
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(
+    (docSnapshot) => docSnapshot.data() as any
+  );
+};
