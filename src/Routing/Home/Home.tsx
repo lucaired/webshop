@@ -1,10 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Directory from "../../Components/Directory";
 import { CategoryInfo } from "../../Components/CategoryContainer/CategoryContainer";
-import SpecialOffer from "../../Components/SpecialOffer";
-import { useSelector } from "react-redux";
-import { selectCategories } from "../../Store/categories/categories.selector";
-import { Product } from "../../Store/categories/categories.types";
 
 const Home = () => {
 

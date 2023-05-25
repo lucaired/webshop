@@ -11,6 +11,9 @@ const CategoryPreview = () => {
 
     const navigate = useNavigate();
 
+    if (categories instanceof Map && categories.size === 0) return (<div>There are no categories</div>)
+    if (!(categories instanceof Map) && Object.keys(categories).length === 0) return (<div>There are no categories</div>)
+
     return (
         <div>
             {Array.from(categories.keys()).map((category, index) => {

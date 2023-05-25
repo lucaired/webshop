@@ -8,6 +8,11 @@ const CategoryFullPage = () => {
     
     const categories = useSelector(selectCategories);
     const { categorySlug } = useParams<{categorySlug: string}>();
+
+    // This seems necessary because categories is first {} and then Map
+    if (categories instanceof Map && categories.size === 0) return (<div>There are no categories</div>)
+    if (!(categories instanceof Map) && Object.keys(categories).length === 0) return (<div>There are no categories</div>)
+
     const products: Product[] = categorySlug ? categories.get(categorySlug) || [] : []; 
 
     return (
