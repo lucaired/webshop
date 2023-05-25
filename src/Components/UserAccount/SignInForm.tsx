@@ -18,11 +18,11 @@ const SignInForm = () => {
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
+        const { name, value } = e.target;
         // [attribute]: value is a computed property name
         setForm({
             ...form,
-            [id]: value
+            [name]: value
         });
     }
 
