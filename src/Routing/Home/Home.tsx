@@ -1,6 +1,9 @@
 import { Outlet } from "react-router-dom";
 import Directory from "../../Components/Directory";
 import { CategoryInfo } from "../../Components/CategoryContainer/CategoryContainer";
+import SpecialOffer from "../../Components/SpecialOffer";
+import { useSelector } from "react-redux";
+import { selectCategories } from "../../Store/categories/categories.selector";
 
 const Home = () => {
 
@@ -34,9 +37,18 @@ const Home = () => {
   
     const categoriesInfos: CategoryInfo[] = JSON.parse(categoriesJSON);
 
+    const categories = useSelector(selectCategories);
+    let specialOffer = null;
+
+    if (categories && categories.size) {
+      const products = Array.from(categories.values()).flat();
+      specialOffer = <SpecialOffer products={products.slice(0, 3)} />;
+    }
+
     return (
       <div>
         <Directory categories={categoriesInfos} />
+        {specialOffer}
         <Outlet />
       </div>
     );
