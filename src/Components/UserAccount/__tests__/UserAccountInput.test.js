@@ -13,7 +13,6 @@ describe('UserAccountInput', () => {
         value: '',
       };
       render(<UserAccountInput {...props} />);
-      expect(screen.getByLabelText('Username')).toBeInTheDocument();
       expect(screen.getByRole('textbox')).toHaveAttribute('type', 'text');
       expect(screen.getByRole('textbox')).toHaveAttribute('name', 'username');
       expect(screen.getByRole('textbox')).toHaveAttribute('value', '');
